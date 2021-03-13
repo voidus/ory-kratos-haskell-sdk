@@ -8,7 +8,6 @@ tools = [
   "haskell-language-server",
   "haskellPackages.aeson",
   "haskellPackages.containers",
-  "haskellPackages.containers",
   "haskellPackages.exceptions",
   "haskellPackages.http-api-data",
   "haskellPackages.http-client",
