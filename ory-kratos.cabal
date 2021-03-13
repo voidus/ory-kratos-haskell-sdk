@@ -1,0 +1,42 @@
+cabal-version:       3.0
+name:                ory-kratos
+version:             0.0.5.5
+synopsis:            Auto-generated API bindings for ory-kratos 0.5.5-alpha1
+description:         Please see README.md
+homepage:            https://www.ory.sh/
+author:              ory
+maintainer:          nathan@jaremko.ca
+copyright:           2021 - Ory
+category:            Web
+build-type:          Simple
+license:             Apache-2.0
+
+library
+  hs-source-dirs:      lib
+  exposed-modules:     OryKratos.API
+                     , OryKratos.Types
+  ghc-options:         -Wall
+  build-depends:       base ^>= 4.14.0.0
+                     , aeson
+                     , text
+                     , containers
+                     , exceptions
+                     , network-uri
+                     , servant
+                     , http-api-data
+                     , servant
+                     , servant-client
+                     , servant-client-core
+                     , servant-server
+                     , servant
+                     , wai
+                     , warp
+                     , transformers
+                     , mtl
+                     , time
+                     , http-client
+                     , http-client-tls
+                     , http-types
+                     , swagger2
+                     , uuid
+  default-language:    Haskell2010
