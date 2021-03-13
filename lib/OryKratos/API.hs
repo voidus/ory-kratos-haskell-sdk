@@ -13,8 +13,8 @@
 {-# OPTIONS_GHC
 -fno-warn-unused-binds -fno-warn-unused-imports -freduction-depth=328 #-}
 
-module OryKratos.API
-  -- * Client and Server
+-- |Client and Server
+module OryKratos.API  
   ( Config(..)
   , OryKratosBackend(..)
   , createOryKratosClient
@@ -29,7 +29,7 @@ module OryKratos.API
   , OryKratosAPI
   ) where
 
-import           OryKratos.Types
+import           OryKratos.Types hiding (error)
 
 import           Control.Monad.Catch                (Exception, MonadThrow, throwM)
 import           Control.Monad.Except               (ExceptT, runExceptT)
