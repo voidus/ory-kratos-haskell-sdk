@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
@@ -64,6 +65,10 @@ import Data.Time
 import Data.UUID (UUID)
 import GHC.Generics (Generic)
 
+typeFieldRename :: String -> String
+typeFieldRename "_type" = "type"
+typeFieldRename x = x
+
 -- |
 data CompleteSelfServiceLoginFlowWithPasswordMethod = CompleteSelfServiceLoginFlowWithPasswordMethod
   { -- | Sending the anti-csrf token is only required for browser login flows.
@@ -73,7 +78,7 @@ data CompleteSelfServiceLoginFlowWithPasswordMethod = CompleteSelfServiceLoginFl
     -- | The user's password.
     password :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON CompleteSelfServiceLoginFlowWithPasswordMethod
 
@@ -87,7 +92,7 @@ data CompleteSelfServiceRecoveryFlowWithLinkMethod = CompleteSelfServiceRecovery
     -- | Email to Recover  Needs to be set when initiating the flow. If the email is a registered recovery email, a recovery link will be sent. If the email is not known, a email with details on what happened will be sent instead.  format: email in: body
     email :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON CompleteSelfServiceRecoveryFlowWithLinkMethod
 
@@ -101,7 +106,7 @@ data CompleteSelfServiceSettingsFlowWithPasswordMethod = CompleteSelfServiceSett
     -- | Password is the updated password  type: string
     password :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON CompleteSelfServiceSettingsFlowWithPasswordMethod
 
@@ -115,7 +120,7 @@ data CompleteSelfServiceVerificationFlowWithLinkMethod = CompleteSelfServiceVeri
     -- | Email to Verify  Needs to be set when initiating the flow. If the email is a registered verification email, a verification link will be sent. If the email is not known, a email with details on what happened will be sent instead.  format: email in: body
     email :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON CompleteSelfServiceVerificationFlowWithLinkMethod
 
@@ -129,7 +134,7 @@ data CreateIdentity = CreateIdentity
     -- | Traits represent an identity's traits. The identity is able to create, modify, and delete traits in a self-service manner. The input will always be validated against the JSON Schema defined in `schema_url`.
     traits :: Value
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON CreateIdentity
 
@@ -143,7 +148,7 @@ data CreateRecoveryLink = CreateRecoveryLink
     -- |
     identity_id :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON CreateRecoveryLink
 
@@ -157,7 +162,7 @@ data ErrorContainer = ErrorContainer
     -- |
     id :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON ErrorContainer
 
@@ -181,20 +186,22 @@ data FormField = FormField
     -- | Value is the equivalent of `<input value=\"{{.Value}}\">`
     value :: Maybe Value
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON FormField where
   parseJSON =
     genericParseJSON
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 instance ToJSON FormField where
   toEncoding =
     genericToEncoding
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 -- | Error responses are sent when an error (e.g. unauthorized, bad request, ...) occurred.
@@ -202,7 +209,7 @@ data GenericError = GenericError
   { -- |
     error :: Maybe GenericErrorPayload
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON GenericError
 
@@ -226,7 +233,7 @@ data GenericErrorPayload = GenericErrorPayload
     -- |
     status :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON GenericErrorPayload
 
@@ -238,7 +245,7 @@ data HealthNotReadyStatus = HealthNotReadyStatus
   { -- | Errors contains a list of errors that caused the not ready status.
     errors :: Maybe (Map.Map String Text)
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON HealthNotReadyStatus
 
@@ -250,7 +257,7 @@ data HealthStatus = HealthStatus
   { -- | Status always contains \"ok\".
     status :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON HealthStatus
 
@@ -272,7 +279,7 @@ data Identity = Identity
     -- | VerifiableAddresses contains all the addresses that can be verified by the user.
     verifiable_addresses :: Maybe [VerifiableAddress]
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON Identity
 
@@ -294,26 +301,28 @@ data LoginFlow = LoginFlow
     -- |
     messages :: Maybe [Message],
     -- | List of login methods  This is the list of available login methods with their required form fields, such as `identifier` and `password` for the password login method. This will also contain error messages such as \"password can not be empty\".
-    methods :: (Map.Map String LoginFlowMethod),
+    methods :: Map.Map String LoginFlowMethod,
     -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- | The flow type can either be `api` or `browser`.
     _type :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON LoginFlow where
   parseJSON =
     genericParseJSON
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 instance ToJSON LoginFlow where
   toEncoding =
     genericToEncoding
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 -- |
@@ -323,7 +332,7 @@ data LoginFlowMethod = LoginFlowMethod
     -- | and so on.
     method :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON LoginFlowMethod
 
@@ -343,7 +352,7 @@ data LoginFlowMethodConfig = LoginFlowMethodConfig
     -- | Providers is set for the \"oidc\" flow method.
     providers :: Maybe [FormField]
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON LoginFlowMethodConfig
 
@@ -357,7 +366,7 @@ data LoginViaApiResponse = LoginViaApiResponse
     -- | The Session Token  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!
     session_token :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON LoginViaApiResponse
 
@@ -375,20 +384,22 @@ data Message = Message
     -- | The flow type can either be `api` or `browser`.
     _type :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON Message where
   parseJSON =
     genericParseJSON
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 instance ToJSON Message where
   toEncoding =
     genericToEncoding
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 -- |
@@ -400,7 +411,7 @@ data RecoveryAddress = RecoveryAddress
     -- |
     via :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RecoveryAddress
 
@@ -420,7 +431,7 @@ data RecoveryFlow = RecoveryFlow
     -- |
     messages :: Maybe [Message],
     -- | Methods contains context for all account recovery methods. If a registration request has been processed, but for example the password is incorrect, this will contain error messages.
-    methods :: (Map.Map String RecoveryFlowMethod),
+    methods :: Map.Map String RecoveryFlowMethod,
     -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- |
@@ -428,20 +439,22 @@ data RecoveryFlow = RecoveryFlow
     -- | The flow type can either be `api` or `browser`.
     _type :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RecoveryFlow where
   parseJSON =
     genericParseJSON
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 instance ToJSON RecoveryFlow where
   toEncoding =
     genericToEncoding
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 -- |
@@ -451,7 +464,7 @@ data RecoveryFlowMethod = RecoveryFlowMethod
     -- | Method contains the request credentials type.
     method :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RecoveryFlowMethod
 
@@ -469,7 +482,7 @@ data RecoveryFlowMethodConfig = RecoveryFlowMethodConfig
     -- | Method is the form method (e.g. POST)
     method :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RecoveryFlowMethodConfig
 
@@ -483,7 +496,7 @@ data RecoveryLink = RecoveryLink
     -- | Recovery Link  This link can be used to recover the account.
     recovery_link :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RecoveryLink
 
@@ -503,26 +516,28 @@ data RegistrationFlow = RegistrationFlow
     -- |
     messages :: Maybe [Message],
     -- | Methods contains context for all enabled registration methods. If a registration flow has been processed, but for example the password is incorrect, this will contain error messages.
-    methods :: (Map.Map String RegistrationFlowMethod),
+    methods :: Map.Map String RegistrationFlowMethod,
     -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- | The flow type can either be `api` or `browser`.
     _type :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RegistrationFlow where
   parseJSON =
     genericParseJSON
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 instance ToJSON RegistrationFlow where
   toEncoding =
     genericToEncoding
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 -- |
@@ -532,7 +547,7 @@ data RegistrationFlowMethod = RegistrationFlowMethod
     -- | and so on.
     method :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RegistrationFlowMethod
 
@@ -552,7 +567,7 @@ data RegistrationFlowMethodConfig = RegistrationFlowMethodConfig
     -- | Providers is set for the \"oidc\" registration method.
     providers :: Maybe [FormField]
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RegistrationFlowMethodConfig
 
@@ -568,7 +583,7 @@ data RegistrationViaApiResponse = RegistrationViaApiResponse
     -- | The Session Token  This field is only set when the session hook is configured as a post-registration hook.  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!
     session_token :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RegistrationViaApiResponse
 
@@ -580,7 +595,7 @@ data RevokeSession = RevokeSession
   { -- | The Session Token  Invalidate this session token.
     session_token :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON RevokeSession
 
@@ -602,7 +617,7 @@ data Session = Session
     -- |
     issued_at :: UTCTime
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON Session
 
@@ -624,7 +639,7 @@ data SettingsFlow = SettingsFlow
     -- |
     messages :: Maybe [Message],
     -- | Methods contains context for all enabled registration methods. If a settings flow has been processed, but for example the first name is empty, this will contain error messages.
-    methods :: (Map.Map String SettingsFlowMethod),
+    methods :: Map.Map String SettingsFlowMethod,
     -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- |
@@ -632,20 +647,22 @@ data SettingsFlow = SettingsFlow
     -- | The flow type can either be `api` or `browser`.
     _type :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON SettingsFlow where
   parseJSON =
     genericParseJSON
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 instance ToJSON SettingsFlow where
   toEncoding =
     genericToEncoding
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 -- |
@@ -655,7 +672,7 @@ data SettingsFlowMethod = SettingsFlowMethod
     -- | Method is the name of this flow method.
     method :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON SettingsFlowMethod
 
@@ -673,7 +690,7 @@ data SettingsFlowMethodConfig = SettingsFlowMethodConfig
     -- | Method is the form method (e.g. POST)
     method :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON SettingsFlowMethodConfig
 
@@ -687,7 +704,7 @@ data SettingsViaApiResponse = SettingsViaApiResponse
     -- |
     identity :: Identity
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON SettingsViaApiResponse
 
@@ -701,7 +718,7 @@ data UpdateIdentity = UpdateIdentity
     -- | Traits represent an identity's traits. The identity is able to create, modify, and delete traits in a self-service manner. The input will always be validated against the JSON Schema defined in `schema_id`.
     traits :: Value
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON UpdateIdentity
 
@@ -723,7 +740,7 @@ data VerifiableAddress = VerifiableAddress
     -- |
     via :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON VerifiableAddress
 
@@ -743,7 +760,7 @@ data VerificationFlow = VerificationFlow
     -- |
     messages :: Maybe [Message],
     -- | Methods contains context for all account verification methods. If a registration request has been processed, but for example the password is incorrect, this will contain error messages.
-    methods :: (Map.Map String VerificationFlowMethod),
+    methods :: Map.Map String VerificationFlowMethod,
     -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Maybe Text,
     -- |
@@ -751,20 +768,22 @@ data VerificationFlow = VerificationFlow
     -- | The flow type can either be `api` or `browser`.
     _type :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON VerificationFlow where
   parseJSON =
     genericParseJSON
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 instance ToJSON VerificationFlow where
   toEncoding =
     genericToEncoding
       defaultOptions
-        { constructorTagModifier = \f -> if f == "_type" then "type" else f
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
         }
 
 -- |
@@ -774,7 +793,7 @@ data VerificationFlowMethod = VerificationFlowMethod
     -- | Method contains the request credentials type.
     method :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON VerificationFlowMethod
 
@@ -792,7 +811,7 @@ data VerificationFlowMethodConfig = VerificationFlowMethodConfig
     -- | Method is the form method (e.g. POST)
     method :: Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON VerificationFlowMethodConfig
 
@@ -804,7 +823,7 @@ data Version = Version
   { -- | Version is the service's version.
     version :: Maybe Text
   }
-  deriving (Show, Eq, Generic, Data)
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON Version
 

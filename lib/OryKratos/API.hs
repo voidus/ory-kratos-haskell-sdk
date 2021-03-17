@@ -10,6 +10,7 @@
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE TypeOperators              #-}
 {-# LANGUAGE ViewPatterns               #-}
+{-# LANGUAGE DerivingStrategies #-}
 {-# OPTIONS_GHC
 -fno-warn-unused-binds -fno-warn-unused-imports -freduction-depth=328 #-}
 
@@ -72,7 +73,9 @@ import           Web.HttpApiData
 -- | List of elements parsed from a query.
 newtype QueryList (p :: CollectionFormat) a = QueryList
   { fromQueryList :: [a]
-  } deriving (Functor, Applicative, Monad, Foldable, Traversable)
+  } 
+  deriving stock (Traversable)
+  deriving newtype (Functor, Applicative, Monad, Foldable)
 
 -- | Formats in which a list can be encoded into a HTTP path.
 data CollectionFormat
@@ -164,12 +167,12 @@ type OryKratosAPI
 -- | Server or client configuration, specifying the host and port to query or serve on.
 data Config = Config
   { configUrl :: String  -- ^ scheme://hostname:port/path, e.g. "http://localhost:8080/"
-  } deriving (Eq, Ord, Show, Read)
+  } deriving stock (Eq, Ord, Show, Read)
 
 
 -- | Custom exception type for our errors.
 newtype OryKratosClientError = OryKratosClientError ClientError
-  deriving (Show, Exception)
+  deriving newtype (Show, Exception)
 -- | Configuration, specifying the full url of the service.
 
 
@@ -219,7 +222,7 @@ data OryKratosBackend m = OryKratosBackend
 
 newtype OryKratosClient a = OryKratosClient
   { runClient :: ClientEnv -> ExceptT ClientError IO a
-  } deriving Functor
+  } deriving stock (Functor)
 
 instance Applicative OryKratosClient where
   pure x = OryKratosClient (\_ -> pure x)
