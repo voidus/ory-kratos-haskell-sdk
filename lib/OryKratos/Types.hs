@@ -301,7 +301,7 @@ data LoginFlow = LoginFlow
     -- |
     messages :: Maybe [Message],
     -- | List of login methods  This is the list of available login methods with their required form fields, such as `identifier` and `password` for the password login method. This will also contain error messages such as \"password can not be empty\".
-    methods :: Map.Map String LoginFlowMethod,
+    methods :: LoginFlowMethods,
     -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- | The flow type can either be `api` or `browser`.
@@ -324,6 +324,18 @@ instance ToJSON LoginFlow where
         { constructorTagModifier = typeFieldRename,
           fieldLabelModifier = typeFieldRename
         }
+
+data LoginFlowMethods = LoginFlowMethods
+  {
+    password :: Maybe LoginFlowMethod,
+    oidc :: Maybe LoginFlowMethod
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON LoginFlowMethods
+
+instance ToJSON LoginFlowMethods where
+  toEncoding = genericToEncoding defaultOptions
 
 -- |
 data LoginFlowMethod = LoginFlowMethod
