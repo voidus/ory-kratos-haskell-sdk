@@ -20,7 +20,7 @@ module Pre
     UUID,
     Generic,
     Map,
-    module Prelude
+    module Prelude,
   )
 where
 
@@ -29,9 +29,9 @@ import Data.Aeson.Types (Options (..), defaultOptions)
 import Data.Data (Data)
 import Data.Function ((&))
 import Data.List (stripPrefix)
+import Data.Map (Map)
 import Data.Maybe (fromMaybe)
 import Data.Set (Set)
-import Data.Map (Map)
 import Data.Swagger (ToSchema, declareNamedSchema)
 import Data.Text (Text)
 import Data.Time
