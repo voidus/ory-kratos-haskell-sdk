@@ -1,7 +1,14 @@
-module OryKratos.Types.Recovery where
+module OryKratos.Types.Recovery
+  ( RecoveryFlow (..),
+    RecoveryFlowMethods (..),
+    RecoveryFlowMethod (..),
+    RecoveryFlowMethodConfig (..),
+    RecoveryLink (..),
+  )
+where
 
+import OryKratos.Types.Misc (FormField, Message)
 import Pre
-import OryKratos.Types.Misc ( FormField, Message )
 
 -- | This request is used when an identity wants to recover their account.  We recommend reading the [Account Recovery Documentation](../self-service/flows/password-reset-account-recovery)
 data RecoveryFlow = RecoveryFlow

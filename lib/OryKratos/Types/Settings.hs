@@ -1,8 +1,14 @@
-module OryKratos.Types.Settings where
+module OryKratos.Types.Settings
+  ( SettingsFlow (..),
+    SettingsFlowMethods (..),
+    SettingsFlowMethod (..),
+    SettingsFlowMethodConfig (..),
+    SettingsViaApiResponse (..),
+  )
+where
 
+import OryKratos.Types.Misc (FormField, Identity, Message)
 import Pre
-import OryKratos.Types.Misc ( FormField, Message, Identity )
-
 
 -- | This flow is used when an identity wants to update settings (e.g. profile data, passwords, ...) in a selfservice manner.  We recommend reading the [User Settings Documentation](../self-service/flows/user-settings)
 data SettingsFlow = SettingsFlow

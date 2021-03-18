@@ -1,10 +1,19 @@
-module OryKratos.Types.Registration where
+module OryKratos.Types.Registration
+  ( RegistrationFlow (..),
+    RegistrationFlowMethods (..),
+    RegistrationFlowMethod (..),
+    RegistrationFlowMethodConfig (..),
+    RegistrationViaApiResponse (..),
+  )
+where
 
-import Pre
 import OryKratos.Types.Misc
-    ( FormField, Message, Session, Identity )
-
-
+  ( FormField,
+    Identity,
+    Message,
+    Session,
+  )
+import Pre
 
 -- |
 data RegistrationFlow = RegistrationFlow

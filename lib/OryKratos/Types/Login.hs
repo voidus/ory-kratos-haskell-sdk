@@ -1,7 +1,14 @@
-module OryKratos.Types.Login where
+module OryKratos.Types.Login
+  ( LoginFlow (..),
+    LoginFlowMethods (..),
+    LoginFlowMethod (..),
+    LoginFlowMethodConfig (..),
+    LoginViaApiResponse (..),
+  )
+where
 
+import OryKratos.Types.Misc (FormField, Message, Session)
 import Pre
-import OryKratos.Types.Misc ( FormField, Message, Session )
 
 -- | This object represents a login flow. A login flow is initiated at the \&quot;Initiate Login API / Browser Flow\&quot; endpoint by a client.  Once a login flow is completed successfully, a session cookie or session token will be issued.
 data LoginFlow = LoginFlow
@@ -43,8 +50,7 @@ instance ToJSON LoginFlow where
         }
 
 data LoginFlowMethods = LoginFlowMethods
-  {
-    password :: Maybe LoginFlowMethod,
+  { password :: Maybe LoginFlowMethod,
     oidc :: Maybe LoginFlowMethod
   }
   deriving stock (Show, Eq, Generic, Data)

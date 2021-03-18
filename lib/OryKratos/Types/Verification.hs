@@ -1,8 +1,13 @@
-module OryKratos.Types.Verification where
+module OryKratos.Types.Verification
+  ( VerificationFlow (..),
+    VerificationFlowMethods (..),
+    VerificationFlowMethod (..),
+    VerificationFlowMethodConfig (..),
+  )
+where
 
+import OryKratos.Types.Misc (FormField, Message)
 import Pre
-import OryKratos.Types.Misc ( FormField, Message )
-
 
 -- | Used to verify an out-of-band communication channel such as an email address or a phone number.  For more information head over to: https://www.ory.sh/docs/kratos/selfservice/flows/verify-email-account-activation
 data VerificationFlow = VerificationFlow

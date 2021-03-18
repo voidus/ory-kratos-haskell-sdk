@@ -1,4 +1,26 @@
-module OryKratos.Types.Misc where
+module OryKratos.Types.Misc
+  ( Message (..),
+    ErrorContainer (..),
+    FormField (..),
+    GenericError (..),
+    GenericErrorPayload (..),
+    HealthNotReadyStatus (..),
+    HealthStatus (..),
+    CompleteSelfServiceLoginFlowWithPasswordMethod (..),
+    CompleteSelfServiceRecoveryFlowWithLinkMethod (..),
+    CompleteSelfServiceSettingsFlowWithPasswordMethod (..),
+    CompleteSelfServiceVerificationFlowWithLinkMethod (..),
+    CreateIdentity (..),
+    CreateRecoveryLink (..),
+    Identity (..),
+    RevokeSession (..),
+    Session (..),
+    UpdateIdentity (..),
+    VerifiableAddress (..),
+    Version (..),
+    RecoveryAddress (..),
+  )
+where
 
 import Pre
 
@@ -30,7 +52,6 @@ instance ToJSON Message where
         { constructorTagModifier = typeFieldRename,
           fieldLabelModifier = typeFieldRename
         }
-
 
 -- |
 data ErrorContainer = ErrorContainer
@@ -249,9 +270,6 @@ instance FromJSON Identity
 instance ToJSON Identity where
   toEncoding = genericToEncoding defaultOptions
 
-
-
-
 -- |
 data RevokeSession = RevokeSession
   { -- | The Session Token  Invalidate this session token.
@@ -321,7 +339,6 @@ instance FromJSON VerifiableAddress
 
 instance ToJSON VerifiableAddress where
   toEncoding = genericToEncoding defaultOptions
-
 
 -- |
 data Version = Version
