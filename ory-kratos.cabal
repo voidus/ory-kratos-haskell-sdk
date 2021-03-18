@@ -1,6 +1,6 @@
 cabal-version: 3.0
 name:          ory-kratos
-version:       0.0.5.8
+version:       0.0.5.9
 synopsis:      API bindings for Ory Kratos
 description:   Auto-generated API bindings for ory-kratos 0.5.5-alpha1
 homepage:      https://github.com/njaremko/ory-kratos-haskell-sdk
