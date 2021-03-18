@@ -20,28 +20,33 @@ module OryKratos.Types
     HealthStatus (..),
     Identity (..),
     LoginFlow (..),
+    LoginFlowMethods (..),
     LoginFlowMethod (..),
     LoginFlowMethodConfig (..),
     LoginViaApiResponse (..),
     Message (..),
     RecoveryAddress (..),
     RecoveryFlow (..),
+    RecoveryFlowMethods (..),
     RecoveryFlowMethod (..),
     RecoveryFlowMethodConfig (..),
     RecoveryLink (..),
     RegistrationFlow (..),
+    RegistrationFlowMethods (..),
     RegistrationFlowMethod (..),
     RegistrationFlowMethodConfig (..),
     RegistrationViaApiResponse (..),
     RevokeSession (..),
     Session (..),
     SettingsFlow (..),
+    SettingsFlowMethods (..),
     SettingsFlowMethod (..),
     SettingsFlowMethodConfig (..),
     SettingsViaApiResponse (..),
     UpdateIdentity (..),
     VerifiableAddress (..),
     VerificationFlow (..),
+    VerificationFlowMethods (..),
     VerificationFlowMethod (..),
     VerificationFlowMethodConfig (..),
     Version (..),
@@ -443,7 +448,7 @@ data RecoveryFlow = RecoveryFlow
     -- |
     messages :: Maybe [Message],
     -- | Methods contains context for all account recovery methods. If a registration request has been processed, but for example the password is incorrect, this will contain error messages.
-    methods :: Map.Map String RecoveryFlowMethod,
+    methods :: RecoveryFlowMethods,
     -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- |
@@ -468,6 +473,18 @@ instance ToJSON RecoveryFlow where
         { constructorTagModifier = typeFieldRename,
           fieldLabelModifier = typeFieldRename
         }
+
+-- |
+data RecoveryFlowMethods = RecoveryFlowMethods
+  { -- |
+    link :: Maybe RecoveryFlowMethod
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON RecoveryFlowMethods
+
+instance ToJSON RecoveryFlowMethods where
+  toEncoding = genericToEncoding defaultOptions
 
 -- |
 data RecoveryFlowMethod = RecoveryFlowMethod
@@ -528,7 +545,7 @@ data RegistrationFlow = RegistrationFlow
     -- |
     messages :: Maybe [Message],
     -- | Methods contains context for all enabled registration methods. If a registration flow has been processed, but for example the password is incorrect, this will contain error messages.
-    methods :: Map.Map String RegistrationFlowMethod,
+    methods :: RegistrationFlowMethods,
     -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- | The flow type can either be `api` or `browser`.
@@ -551,6 +568,20 @@ instance ToJSON RegistrationFlow where
         { constructorTagModifier = typeFieldRename,
           fieldLabelModifier = typeFieldRename
         }
+
+-- |
+data RegistrationFlowMethods = RegistrationFlowMethods
+  { -- |
+    password :: Maybe RegistrationFlowMethod,
+    -- | and so on.
+    oidc :: Maybe RegistrationFlowMethod
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON RegistrationFlowMethods
+
+instance ToJSON RegistrationFlowMethods where
+  toEncoding = genericToEncoding defaultOptions
 
 -- |
 data RegistrationFlowMethod = RegistrationFlowMethod
@@ -651,7 +682,7 @@ data SettingsFlow = SettingsFlow
     -- |
     messages :: Maybe [Message],
     -- | Methods contains context for all enabled registration methods. If a settings flow has been processed, but for example the first name is empty, this will contain error messages.
-    methods :: Map.Map String SettingsFlowMethod,
+    methods :: SettingsFlowMethods,
     -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- |
@@ -676,6 +707,20 @@ instance ToJSON SettingsFlow where
         { constructorTagModifier = typeFieldRename,
           fieldLabelModifier = typeFieldRename
         }
+
+-- |
+data SettingsFlowMethods = SettingsFlowMethods
+  { -- |
+    profile :: Maybe SettingsFlowMethod,
+    password :: Maybe SettingsFlowMethod,
+    oidc :: Maybe SettingsFlowMethod
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON SettingsFlowMethods
+
+instance ToJSON SettingsFlowMethods where
+  toEncoding = genericToEncoding defaultOptions
 
 -- |
 data SettingsFlowMethod = SettingsFlowMethod
@@ -797,6 +842,18 @@ instance ToJSON VerificationFlow where
         { constructorTagModifier = typeFieldRename,
           fieldLabelModifier = typeFieldRename
         }
+
+-- |
+data VerificationFlowMethods = VerificationFlowMethods
+  { -- |
+    link :: Maybe VerificationFlowMethod
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON VerificationFlowMethods
+
+instance ToJSON VerificationFlowMethods where
+  toEncoding = genericToEncoding defaultOptions
 
 -- |
 data VerificationFlowMethod = VerificationFlowMethod
