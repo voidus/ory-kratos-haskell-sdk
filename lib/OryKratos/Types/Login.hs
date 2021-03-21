@@ -19,7 +19,7 @@ data LoginFlow = LoginFlow
     -- | Forced stores whether this login flow should enforce re-authentication.
     forced :: Maybe Bool,
     -- |
-    id :: Text,
+    id :: UUID,
     -- | IssuedAt is the time (UTC) when the flow started.
     issued_at :: UTCTime,
     -- |

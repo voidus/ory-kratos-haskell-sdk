@@ -16,7 +16,7 @@ data VerificationFlow = VerificationFlow
     -- | ExpiresAt is the time (UTC) when the request expires. If the user still wishes to verify the address, a new request has to be initiated.
     expires_at :: Maybe UTCTime,
     -- |
-    id :: Maybe Text,
+    id :: Maybe UUID,
     -- | IssuedAt is the time (UTC) when the request occurred.
     issued_at :: Maybe UTCTime,
     -- |

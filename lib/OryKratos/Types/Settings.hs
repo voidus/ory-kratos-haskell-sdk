@@ -17,7 +17,7 @@ data SettingsFlow = SettingsFlow
     -- | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to update the setting, a new flow has to be initiated.
     expires_at :: UTCTime,
     -- |
-    id :: Text,
+    id :: UUID,
     -- |
     identity :: Identity,
     -- | IssuedAt is the time (UTC) when the flow occurred.

@@ -239,7 +239,7 @@ data CreateRecoveryLink = CreateRecoveryLink
   { -- | Link Expires In  The recovery link will expire at that point in time. Defaults to the configuration value of `selfservice.flows.recovery.request_lifespan`.
     expires_in :: Maybe Text,
     -- |
-    identity_id :: Text
+    identity_id :: UUID
   }
   deriving stock (Show, Eq, Generic, Data)
 
@@ -251,7 +251,7 @@ instance ToJSON CreateRecoveryLink where
 -- |
 data Identity = Identity
   { -- |
-    id :: Text,
+    id :: UUID,
     -- | RecoveryAddresses contains all the addresses that can be used to recover an identity.
     recovery_addresses :: Maybe [RecoveryAddress],
     -- | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.
@@ -291,7 +291,7 @@ data Session = Session
     -- |
     expires_at :: UTCTime,
     -- |
-    id :: Text,
+    id :: UUID,
     -- |
     identity :: Identity,
     -- |
@@ -321,7 +321,7 @@ instance ToJSON UpdateIdentity where
 -- |
 data VerifiableAddress = VerifiableAddress
   { -- |
-    id :: Text,
+    id :: UUID,
     -- |
     status :: Text,
     -- |
@@ -355,7 +355,7 @@ instance ToJSON Version where
 -- |
 data RecoveryAddress = RecoveryAddress
   { -- |
-    id :: Text,
+    id :: UUID,
     -- |
     value :: Text,
     -- |

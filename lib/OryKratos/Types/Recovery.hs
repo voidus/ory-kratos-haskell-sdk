@@ -17,7 +17,7 @@ data RecoveryFlow = RecoveryFlow
     -- | ExpiresAt is the time (UTC) when the request expires. If the user still wishes to update the setting, a new request has to be initiated.
     expires_at :: UTCTime,
     -- |
-    id :: Text,
+    id :: UUID,
     -- | IssuedAt is the time (UTC) when the request occurred.
     issued_at :: UTCTime,
     -- |

@@ -22,7 +22,7 @@ data RegistrationFlow = RegistrationFlow
     -- | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to log in, a new flow has to be initiated.
     expires_at :: UTCTime,
     -- |
-    id :: Text,
+    id :: UUID,
     -- | IssuedAt is the time (UTC) when the flow occurred.
     issued_at :: UTCTime,
     -- |
