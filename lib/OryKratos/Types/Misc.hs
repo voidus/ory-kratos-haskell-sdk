@@ -3,22 +3,30 @@ module OryKratos.Types.Misc
     ErrorContainer (..),
     FormField (..),
     GenericError (..),
-    GenericErrorPayload (..),
     HealthNotReadyStatus (..),
     HealthStatus (..),
-    CompleteSelfServiceLoginFlowWithPasswordMethod (..),
-    CompleteSelfServiceRecoveryFlowWithLinkMethod (..),
-    CompleteSelfServiceSettingsFlowWithPasswordMethod (..),
-    CompleteSelfServiceVerificationFlowWithLinkMethod (..),
     CreateIdentity (..),
     CreateRecoveryLink (..),
     Identity (..),
     RevokeSession (..),
     Session (..),
     UpdateIdentity (..),
-    VerifiableAddress (..),
+    VerifiableIdentityAddress (..),
     Version (..),
     RecoveryAddress (..),
+    ContainerChangeResponseItem (..),
+    ContainerCreateCreatedBody (..),
+    ContainerTopOKBody (..),
+    ContainerUpdateOKBody (..),
+    ContainerWaitOKBody (..),
+    ContainerWaitOKBodyError (..),
+    ErrorResponse (..),
+    GraphDriverData (..),
+    IdResponse (..),
+    ImageSummary (..),
+    ImageDeleteResponseItem (..),
+    JsonError (..),
+    SelfServiceErrorContainer (..),
   )
 where
 
@@ -104,38 +112,26 @@ instance ToJSON FormField where
 
 -- | Error responses are sent when an error (e.g. unauthorized, bad request, ...) occurred.
 data GenericError = GenericError
-  { -- |
-    error :: Maybe GenericErrorPayload
+  { -- | The status code
+    code :: Maybe Integer,
+    -- | Debug information  This field is often not exposed to protect against leaking sensitive information.
+    debug :: Maybe Text,
+    -- | Further error details
+    details :: Maybe Value,
+    -- | Error message  The error's message.
+    message :: Text,
+    -- | A human-readable reason for the error
+    reason :: Maybe Text,
+    -- | The request ID  The request ID is often exposed internally in order to trace errors across service architectures. This is often a UUID.
+    request :: Maybe Text,
+    -- | The status description
+    status :: Maybe Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON GenericError
 
 instance ToJSON GenericError where
-  toEncoding = genericToEncoding defaultOptions
-
--- |
-data GenericErrorPayload = GenericErrorPayload
-  { -- | Code represents the error status code (404, 403, 401, ...).
-    code :: Maybe Integer,
-    -- | Debug contains debug information. This is usually not available and has to be enabled.
-    debug :: Maybe Text,
-    -- |
-    details :: Maybe Value,
-    -- |
-    message :: Maybe Text,
-    -- |
-    reason :: Maybe Text,
-    -- |
-    request :: Maybe Text,
-    -- |
-    status :: Maybe Text
-  }
-  deriving stock (Show, Eq, Generic, Data)
-
-instance FromJSON GenericErrorPayload
-
-instance ToJSON GenericErrorPayload where
   toEncoding = genericToEncoding defaultOptions
 
 -- |
@@ -235,7 +231,7 @@ instance ToJSON CreateIdentity where
   toEncoding = genericToEncoding defaultOptions
 
 -- |
-data CreateRecoveryLink = CreateRecoveryLink
+data CreateRecoveryLink = AdminCreateSelfServiceRecoveryLinkBody
   { -- | Link Expires In  The recovery link will expire at that point in time. Defaults to the configuration value of `selfservice.flows.recovery.request_lifespan`.
     expires_in :: Maybe Text,
     -- |
@@ -250,18 +246,22 @@ instance ToJSON CreateRecoveryLink where
 
 -- |
 data Identity = Identity
-  { -- |
-    id :: UUID,
+  { -- | CreatedAt is a helper struct field for gobuffalo.pop.
+    created_at :: Maybe UTCTime,
+    -- |
+    id :: Text,
     -- | RecoveryAddresses contains all the addresses that can be used to recover an identity.
     recovery_addresses :: Maybe [RecoveryAddress],
     -- | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.
     schema_id :: Text,
     -- | SchemaURL is the URL of the endpoint where the identity's traits schema can be fetched from.  format: url
     schema_url :: Text,
-    -- |
+    -- | Traits represent an identity's traits. The identity is able to create, modify, and delete traits in a self-service manner. The input will always be validated against the JSON Schema defined in `schema_url`.
     traits :: Value,
+    -- | UpdatedAt is a helper struct field for gobuffalo.pop.
+    updated_at :: Maybe UTCTime,
     -- | VerifiableAddresses contains all the addresses that can be verified by the user.
-    verifiable_addresses :: Maybe [VerifiableAddress]
+    verifiable_addresses :: Maybe [VerifiableIdentityAddress]
   }
   deriving stock (Show, Eq, Generic, Data)
 
@@ -269,6 +269,37 @@ instance FromJSON Identity
 
 instance ToJSON Identity where
   toEncoding = genericToEncoding defaultOptions
+
+-- | Credentials represents a specific credential type
+data IdentityCredentials = IdentityCredentials
+  { -- |
+    config :: Maybe Value,
+    -- | CreatedAt is a helper struct field for gobuffalo.pop.
+    created_at :: Maybe UTCTime,
+    -- | Identifiers represents a list of unique identifiers this credential type matches.
+    identifiers :: Maybe [Text],
+    -- | and so on.
+    _type :: Maybe Text,
+    -- | UpdatedAt is a helper struct field for gobuffalo.pop.
+    updated_at :: Maybe UTCTime
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON IdentityCredentials where
+  parseJSON =
+    genericParseJSON
+      defaultOptions
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
+        }
+
+instance ToJSON IdentityCredentials where
+  toEncoding =
+    genericToEncoding
+      defaultOptions
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
+        }
 
 -- |
 data RevokeSession = RevokeSession
@@ -308,6 +339,8 @@ instance ToJSON Session where
 data UpdateIdentity = UpdateIdentity
   { -- | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits. If set will update the Identity's SchemaID.
     schema_id :: Maybe Text,
+    -- | State is the identity's state.
+    state :: Value,
     -- | Traits represent an identity's traits. The identity is able to create, modify, and delete traits in a self-service manner. The input will always be validated against the JSON Schema defined in `schema_id`.
     traits :: Value
   }
@@ -319,25 +352,29 @@ instance ToJSON UpdateIdentity where
   toEncoding = genericToEncoding defaultOptions
 
 -- |
-data VerifiableAddress = VerifiableAddress
-  { -- |
+data VerifiableIdentityAddress = VerifiableIdentityAddress
+  { -- | When this entry was created
+    created_at :: Maybe UTCTime,
+    -- |
     id :: UUID,
-    -- |
+    -- | VerifiableAddressStatus must not exceed 16 characters as that is the limitation in the SQL Schema
     status :: Text,
-    -- |
+    -- | When this entry was last updated
+    updated_at :: Maybe UTCTime,
+    -- | The address value  example foo@user.com
     value :: Text,
-    -- |
+    -- | Indicates if the address has already been verified
     verified :: Bool,
     -- |
     verified_at :: Maybe UTCTime,
-    -- |
+    -- | VerifiableAddressType must not exceed 16 characters as that is the limitation in the SQL Schema
     via :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON VerifiableAddress
+instance FromJSON VerifiableIdentityAddress
 
-instance ToJSON VerifiableAddress where
+instance ToJSON VerifiableIdentityAddress where
   toEncoding = genericToEncoding defaultOptions
 
 -- |
@@ -366,4 +403,206 @@ data RecoveryAddress = RecoveryAddress
 instance FromJSON RecoveryAddress
 
 instance ToJSON RecoveryAddress where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | ContainerChangeResponseItem change item in response to ContainerChanges operation
+data ContainerChangeResponseItem = ContainerChangeResponseItem
+  { -- | Kind of change
+    item_kind :: Int,
+    -- | Path to file that has changed
+    item_path :: Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON ContainerChangeResponseItem
+
+instance ToJSON ContainerChangeResponseItem where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | ContainerCreateCreatedBody OK response to ContainerCreate operation
+data ContainerCreateCreatedBody = ContainerCreateCreatedBody
+  { -- | The ID of the created container
+    id :: Text,
+    -- | Warnings encountered when creating the container
+    warnings :: [Text]
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON ContainerCreateCreatedBody
+
+instance ToJSON ContainerCreateCreatedBody where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | ContainerTopOKBody OK response to ContainerTop operation
+data ContainerTopOKBody = ContainerTopOKBody
+  { -- | Each process running in the container, where each is process is an array of values corresponding to the titles
+    processes :: [[Text]],
+    -- | The ps column titles
+    titles :: [Text]
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON ContainerTopOKBody
+
+instance ToJSON ContainerTopOKBody where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | ContainerUpdateOKBody OK response to ContainerUpdate operation
+data ContainerUpdateOKBody = ContainerUpdateOKBody
+  { -- | warnings
+    warnings :: [Text]
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON ContainerUpdateOKBody
+
+instance ToJSON ContainerUpdateOKBody where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | ContainerWaitOKBody OK response to ContainerWait operation
+data ContainerWaitOKBody = ContainerWaitOKBody
+  { -- |
+    error :: ContainerWaitOKBodyError,
+    -- | Exit code of the container
+    status_code :: Integer
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON ContainerWaitOKBody
+
+instance ToJSON ContainerWaitOKBody where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | ContainerWaitOKBodyError container waiting error, if any
+data ContainerWaitOKBodyError = ContainerWaitOKBodyError
+  { -- | Details of an error
+    error_message :: Maybe Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON ContainerWaitOKBodyError
+
+instance ToJSON ContainerWaitOKBodyError where
+  toEncoding = genericToEncoding defaultOptions
+
+-- |
+data ErrorResponse = ErrorResponse
+  { -- | The error message.
+    message :: Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON ErrorResponse
+
+instance ToJSON ErrorResponse where
+  toEncoding = genericToEncoding defaultOptions
+
+data GraphDriverData = GraphDriverData
+  { -- | data
+    _data :: Map String Text,
+    -- | name
+    name :: Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON GraphDriverData where
+  parseJSON =
+    genericParseJSON
+      defaultOptions
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
+        }
+
+instance ToJSON GraphDriverData where
+  toEncoding =
+    genericToEncoding
+      defaultOptions
+        { constructorTagModifier = typeFieldRename,
+          fieldLabelModifier = typeFieldRename
+        }
+
+-- | IDResponse Response to an API call that returns just an Id
+data IdResponse = IdResponse
+  { -- | The id of the newly created object.
+    id :: Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON IdResponse
+
+instance ToJSON IdResponse where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | ImageDeleteResponseItem image delete response item
+data ImageDeleteResponseItem = ImageDeleteResponseItem
+  { -- | The image ID of an image that was deleted
+    deleted :: Maybe Text,
+    -- | The image ID of an image that was untagged
+    untagged :: Maybe Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON ImageDeleteResponseItem
+
+instance ToJSON ImageDeleteResponseItem where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | ImageSummary image summary
+data ImageSummary = ImageSummary
+  { -- | containers
+    containers :: Integer,
+    -- | created
+    created :: Integer,
+    -- | Id
+    id :: Text,
+    -- | labels
+    labels :: Map String Text,
+    -- | parent Id
+    parent_id :: Text,
+    -- | repo digests
+    repo_digests :: [Text],
+    -- | repo tags
+    repo_tags :: [Text],
+    -- | shared size
+    shared_size :: Integer,
+    -- | size
+    size :: Integer,
+    -- | virtual size
+    virtual_size :: Integer
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON ImageSummary
+
+instance ToJSON ImageSummary where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | The standard Ory JSON API error format.
+data JsonError = JsonError
+  { -- |
+    error :: GenericError
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON JsonError
+
+instance ToJSON JsonError where
+  toEncoding = genericToEncoding defaultOptions
+
+-- |
+data SelfServiceErrorContainer = SelfServiceErrorContainer
+  { -- | CreatedAt is a helper struct field for gobuffalo.pop.
+    created_at :: Maybe UTCTime,
+    -- | Errors in the container
+    errors :: Value,
+    -- |
+    id :: Text,
+    -- | UpdatedAt is a helper struct field for gobuffalo.pop.
+    updated_at :: Maybe UTCTime
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON SelfServiceErrorContainer
+
+instance ToJSON SelfServiceErrorContainer where
   toEncoding = genericToEncoding defaultOptions

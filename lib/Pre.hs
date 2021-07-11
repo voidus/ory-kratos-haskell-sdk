@@ -41,4 +41,6 @@ import Prelude
 
 typeFieldRename :: String -> String
 typeFieldRename "_type" = "type"
+typeFieldRename "_data" = "data"
+typeFieldRename "_pattern" = "pattern"
 typeFieldRename x = x

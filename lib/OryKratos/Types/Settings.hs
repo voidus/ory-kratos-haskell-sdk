@@ -1,13 +1,13 @@
 module OryKratos.Types.Settings
   ( SettingsFlow (..),
-    SettingsFlowMethods (..),
-    SettingsFlowMethod (..),
-    SettingsFlowMethodConfig (..),
     SettingsViaApiResponse (..),
+    SubmitSelfServiceBrowserSettingsOIDCFlowPayload (..),
+    SubmitSelfServiceSettingsFlowWithPasswordMethod (..),
   )
 where
 
-import OryKratos.Types.Misc (FormField, Identity, Message)
+import OryKratos.Types.Misc (Identity)
+import OryKratos.Types.Ui (UiContainer)
 import Pre
 
 -- | This flow is used when an identity wants to update settings (e.g. profile data, passwords, ...) in a selfservice manner.  We recommend reading the [User Settings Documentation](../self-service/flows/user-settings)
@@ -17,21 +17,19 @@ data SettingsFlow = SettingsFlow
     -- | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to update the setting, a new flow has to be initiated.
     expires_at :: UTCTime,
     -- |
-    id :: UUID,
+    id :: Text,
     -- |
     identity :: Identity,
     -- | IssuedAt is the time (UTC) when the flow occurred.
     issued_at :: UTCTime,
-    -- |
-    messages :: Maybe [Message],
-    -- | Methods contains context for all enabled registration methods. If a settings flow has been processed, but for example the first name is empty, this will contain error messages.
-    methods :: SettingsFlowMethods,
-    -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
+    -- | RequestURL is the initial URL that was requested from Ory Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- |
     state :: Text,
     -- | The flow type can either be `api` or `browser`.
-    _type :: Maybe Text
+    _type :: Maybe Text,
+    -- |
+    ui :: UiContainer
   }
   deriving stock (Show, Eq, Generic, Data)
 
@@ -51,52 +49,6 @@ instance ToJSON SettingsFlow where
           fieldLabelModifier = typeFieldRename
         }
 
--- |
-data SettingsFlowMethods = SettingsFlowMethods
-  { -- |
-    profile :: Maybe SettingsFlowMethod,
-    password :: Maybe SettingsFlowMethod,
-    oidc :: Maybe SettingsFlowMethod
-  }
-  deriving stock (Show, Eq, Generic, Data)
-
-instance FromJSON SettingsFlowMethods
-
-instance ToJSON SettingsFlowMethods where
-  toEncoding = genericToEncoding defaultOptions
-
--- |
-data SettingsFlowMethod = SettingsFlowMethod
-  { -- |
-    config :: SettingsFlowMethodConfig,
-    -- | Method is the name of this flow method.
-    method :: Text
-  }
-  deriving stock (Show, Eq, Generic, Data)
-
-instance FromJSON SettingsFlowMethod
-
-instance ToJSON SettingsFlowMethod where
-  toEncoding = genericToEncoding defaultOptions
-
--- |
-data SettingsFlowMethodConfig = SettingsFlowMethodConfig
-  { -- | Action should be used as the form action URL `<form action=\"{{ .Action }}\" method=\"post\">`.
-    action :: Text,
-    -- | Fields contains multiple fields
-    fields :: [FormField],
-    -- |
-    messages :: Maybe [Message],
-    -- | Method is the form method (e.g. POST)
-    method :: Text
-  }
-  deriving stock (Show, Eq, Generic, Data)
-
-instance FromJSON SettingsFlowMethodConfig
-
-instance ToJSON SettingsFlowMethodConfig where
-  toEncoding = genericToEncoding defaultOptions
-
 -- | The Response for Settings Flows via API
 data SettingsViaApiResponse = SettingsViaApiResponse
   { -- |
@@ -109,4 +61,35 @@ data SettingsViaApiResponse = SettingsViaApiResponse
 instance FromJSON SettingsViaApiResponse
 
 instance ToJSON SettingsViaApiResponse where
+  toEncoding = genericToEncoding defaultOptions
+
+-- |
+data SubmitSelfServiceBrowserSettingsOIDCFlowPayload = SubmitSelfServiceBrowserSettingsOIDCFlowPayload
+  { -- | Flow ID is the flow's ID.  in: query
+    flow :: Maybe Text,
+    -- | Link this provider  Either this or `unlink` must be set.  type: string in: body
+    link :: Maybe Text,
+    -- | Unlink this provider  Either this or `link` must be set.  type: string in: body
+    unlink :: Maybe Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON SubmitSelfServiceBrowserSettingsOIDCFlowPayload
+
+instance ToJSON SubmitSelfServiceBrowserSettingsOIDCFlowPayload where
+  toEncoding = genericToEncoding defaultOptions
+
+data SubmitSelfServiceSettingsFlowWithPasswordMethod = SubmitSelfServiceSettingsFlowWithPasswordMethod
+  { -- | CSRFToken is the anti-CSRF token  type: string
+    csrf_token :: Maybe Text,
+    -- | Method  Should be set to password when trying to update a password.  type: string
+    method :: Maybe Text,
+    -- | Password is the updated password  type: string
+    password :: Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON SubmitSelfServiceSettingsFlowWithPasswordMethod
+
+instance ToJSON SubmitSelfServiceSettingsFlowWithPasswordMethod where
   toEncoding = genericToEncoding defaultOptions

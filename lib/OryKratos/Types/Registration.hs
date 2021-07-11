@@ -1,18 +1,15 @@
 module OryKratos.Types.Registration
   ( RegistrationFlow (..),
-    RegistrationFlowMethods (..),
-    RegistrationFlowMethod (..),
-    RegistrationFlowMethodConfig (..),
     RegistrationViaApiResponse (..),
+    SubmitSelfServiceRegistrationFlowWithPasswordMethod (..),
   )
 where
 
 import OryKratos.Types.Misc
-  ( FormField,
-    Identity,
-    Message,
+  ( Identity,
     Session,
   )
+import OryKratos.Types.Ui (UiContainer)
 import Pre
 
 -- |
@@ -22,17 +19,15 @@ data RegistrationFlow = RegistrationFlow
     -- | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to log in, a new flow has to be initiated.
     expires_at :: UTCTime,
     -- |
-    id :: UUID,
+    id :: Text,
     -- | IssuedAt is the time (UTC) when the flow occurred.
     issued_at :: UTCTime,
-    -- |
-    messages :: Maybe [Message],
-    -- | Methods contains context for all enabled registration methods. If a registration flow has been processed, but for example the password is incorrect, this will contain error messages.
-    methods :: RegistrationFlowMethods,
-    -- | RequestURL is the initial URL that was requested from ORY Kratos. It can be used to forward information contained in the URL's path or query for example.
+    -- | RequestURL is the initial URL that was requested from Ory Kratos. It can be used to forward information contained in the URL's path or query for example.
     request_url :: Text,
     -- | The flow type can either be `api` or `browser`.
-    _type :: Maybe Text
+    _type :: Maybe Text,
+    -- |
+    ui :: UiContainer
   }
   deriving stock (Show, Eq, Generic, Data)
 
@@ -52,54 +47,6 @@ instance ToJSON RegistrationFlow where
           fieldLabelModifier = typeFieldRename
         }
 
--- |
-data RegistrationFlowMethods = RegistrationFlowMethods
-  { -- |
-    password :: Maybe RegistrationFlowMethod,
-    -- | and so on.
-    oidc :: Maybe RegistrationFlowMethod
-  }
-  deriving stock (Show, Eq, Generic, Data)
-
-instance FromJSON RegistrationFlowMethods
-
-instance ToJSON RegistrationFlowMethods where
-  toEncoding = genericToEncoding defaultOptions
-
--- |
-data RegistrationFlowMethod = RegistrationFlowMethod
-  { -- |
-    config :: RegistrationFlowMethodConfig,
-    -- | and so on.
-    method :: Text
-  }
-  deriving stock (Show, Eq, Generic, Data)
-
-instance FromJSON RegistrationFlowMethod
-
-instance ToJSON RegistrationFlowMethod where
-  toEncoding = genericToEncoding defaultOptions
-
--- |
-data RegistrationFlowMethodConfig = RegistrationFlowMethodConfig
-  { -- | Action should be used as the form action URL `<form action=\"{{ .Action }}\" method=\"post\">`.
-    action :: Text,
-    -- | Fields contains multiple fields
-    fields :: [FormField],
-    -- |
-    messages :: Maybe [Message],
-    -- | Method is the form method (e.g. POST)
-    method :: Text,
-    -- | Providers is set for the \"oidc\" registration method.
-    providers :: Maybe [FormField]
-  }
-  deriving stock (Show, Eq, Generic, Data)
-
-instance FromJSON RegistrationFlowMethodConfig
-
-instance ToJSON RegistrationFlowMethodConfig where
-  toEncoding = genericToEncoding defaultOptions
-
 -- | The Response for Registration Flows via API
 data RegistrationViaApiResponse = RegistrationViaApiResponse
   { -- |
@@ -114,4 +61,22 @@ data RegistrationViaApiResponse = RegistrationViaApiResponse
 instance FromJSON RegistrationViaApiResponse
 
 instance ToJSON RegistrationViaApiResponse where
+  toEncoding = genericToEncoding defaultOptions
+
+-- | SubmitSelfServiceRegistrationFlowWithPasswordMethod is used to decode the registration form payload when using the password method.
+data SubmitSelfServiceRegistrationFlowWithPasswordMethod = SubmitSelfServiceRegistrationFlowWithPasswordMethod
+  { -- | The CSRF Token
+    csrf_token :: Maybe Text,
+    -- | Method to use  This field must be set to `password` when using the password method.
+    method :: Text,
+    -- | Password to sign the user up with
+    password :: Maybe Text,
+    -- | The identity's traits
+    traits :: Maybe Value
+  }
+  deriving stock (Show, Eq, Generic, Data)
+
+instance FromJSON SubmitSelfServiceRegistrationFlowWithPasswordMethod
+
+instance ToJSON SubmitSelfServiceRegistrationFlowWithPasswordMethod where
   toEncoding = genericToEncoding defaultOptions
