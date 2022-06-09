@@ -4,18 +4,7 @@ The library in `lib` provides auto-generated-from-OpenAPI bindings to the OryKra
 
 ## Installation
 
-Installation follows the standard approach to installing Stack-based projects.
-
-1. Install the [Haskell `stack` tool](http://docs.haskellstack.org/en/stable/README).
-2. Run `stack install` to install this package.
-
-Otherwise, if you already have a Stack project, you can include this package under the `packages` key in your `stack.yaml`:
-```yaml
-packages:
-- location:
-    git: https://github.com/yourGitOrg/yourGitRepo
-    commit: somecommit
-```
+Just add `ory-kratos` to your dependencies
 
 ## Main Interface
 
