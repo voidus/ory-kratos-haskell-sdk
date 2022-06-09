@@ -46,457 +46,413 @@ import OryKratos.Types.Helper (removeFieldLabelPrefix)
 
 data SubmitSelfServiceLoginFlowBody = SubmitSelfServiceLoginFlowBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
-    submitSelfServiceLoginFlowBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Identifier is the email or username of the user trying to log in. This field is only required when using WebAuthn for passwordless login. When using WebAuthn for multi-factor authentication, it is not needed.
-    submitSelfServiceLoginFlowBodyIdentifier :: Text,
+    identifier :: Text,
     -- | Method should be set to \"lookup_secret\" when logging in using the lookup_secret strategy.
-    submitSelfServiceLoginFlowBodyMethod :: Text,
+    method :: Text,
     -- | The user's password.
-    submitSelfServiceLoginFlowBodyPassword :: Text,
+    password :: Text,
     -- | Identifier is the email or username of the user trying to log in. This field is deprecated!
-    submitSelfServiceLoginFlowBodyPasswordUnderscoreidentifier :: Maybe Text,
+    password_identifier :: Maybe Text,
     -- | The provider to register with
-    submitSelfServiceLoginFlowBodyProvider :: Text,
+    provider :: Text,
     -- | The identity traits. This is a placeholder for the registration flow.
-    submitSelfServiceLoginFlowBodyTraits :: Maybe Value,
+    traits :: Maybe Value,
     -- | The TOTP code.
-    submitSelfServiceLoginFlowBodyTotpUnderscorecode :: Text,
+    totp_code :: Text,
     -- | Login a WebAuthn Security Key  This must contain the ID of the WebAuthN connection.
-    submitSelfServiceLoginFlowBodyWebauthnUnderscorelogin :: Maybe Text,
+    webauthn_login :: Maybe Text,
     -- | The lookup secret.
-    submitSelfServiceLoginFlowBodyLookupUnderscoresecret :: Text
+    lookup_secret :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceLoginFlowBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceLoginFlowBody")
+instance FromJSON SubmitSelfServiceLoginFlowBody
 
 instance ToJSON SubmitSelfServiceLoginFlowBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceLoginFlowWithLookupSecretMethodBody = SubmitSelfServiceLoginFlowWithLookupSecretMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
-    submitSelfServiceLoginFlowWithLookupSecretMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | The lookup secret.
-    submitSelfServiceLoginFlowWithLookupSecretMethodBodyLookupUnderscoresecret :: Text,
+    lookup_secret :: Text,
     -- | Method should be set to \"lookup_secret\" when logging in using the lookup_secret strategy.
-    submitSelfServiceLoginFlowWithLookupSecretMethodBodyMethod :: Text
+    method :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceLoginFlowWithLookupSecretMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceLoginFlowWithLookupSecretMethodBody")
+instance FromJSON SubmitSelfServiceLoginFlowWithLookupSecretMethodBody
 
 instance ToJSON SubmitSelfServiceLoginFlowWithLookupSecretMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithLookupSecretMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithLookupSecretMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 -- | SubmitSelfServiceLoginFlowWithOidcMethodBody is used to decode the login form payload when using the oidc method.
 data SubmitSelfServiceLoginFlowWithOidcMethodBody = SubmitSelfServiceLoginFlowWithOidcMethodBody
   { -- | The CSRF Token
-    submitSelfServiceLoginFlowWithOidcMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method to use  This field must be set to `oidc` when using the oidc method.
-    submitSelfServiceLoginFlowWithOidcMethodBodyMethod :: Text,
+    method :: Text,
     -- | The provider to register with
-    submitSelfServiceLoginFlowWithOidcMethodBodyProvider :: Text,
+    provider :: Text,
     -- | The identity traits. This is a placeholder for the registration flow.
-    submitSelfServiceLoginFlowWithOidcMethodBodyTraits :: Maybe Value
+    traits :: Maybe Value
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceLoginFlowWithOidcMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceLoginFlowWithOidcMethodBody")
+instance FromJSON SubmitSelfServiceLoginFlowWithOidcMethodBody
 
 instance ToJSON SubmitSelfServiceLoginFlowWithOidcMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithOidcMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithOidcMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceLoginFlowWithPasswordMethodBody = SubmitSelfServiceLoginFlowWithPasswordMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
-    submitSelfServiceLoginFlowWithPasswordMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Identifier is the email or username of the user trying to log in.
-    submitSelfServiceLoginFlowWithPasswordMethodBodyIdentifier :: Text,
+    identifier :: Text,
     -- | Method should be set to \"password\" when logging in using the identifier and password strategy.
-    submitSelfServiceLoginFlowWithPasswordMethodBodyMethod :: Text,
+    method :: Text,
     -- | The user's password.
-    submitSelfServiceLoginFlowWithPasswordMethodBodyPassword :: Text,
+    password :: Text,
     -- | Identifier is the email or username of the user trying to log in. This field is deprecated!
-    submitSelfServiceLoginFlowWithPasswordMethodBodyPasswordUnderscoreidentifier :: Maybe Text
+    password_identifier :: Maybe Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceLoginFlowWithPasswordMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceLoginFlowWithPasswordMethodBody")
+instance FromJSON SubmitSelfServiceLoginFlowWithPasswordMethodBody
 
 instance ToJSON SubmitSelfServiceLoginFlowWithPasswordMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithPasswordMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithPasswordMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceLoginFlowWithTotpMethodBody = SubmitSelfServiceLoginFlowWithTotpMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
-    submitSelfServiceLoginFlowWithTotpMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method should be set to \"totp\" when logging in using the TOTP strategy.
-    submitSelfServiceLoginFlowWithTotpMethodBodyMethod :: Text,
+    method :: Text,
     -- | The TOTP code.
-    submitSelfServiceLoginFlowWithTotpMethodBodyTotpUnderscorecode :: Text
+    totp_code :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceLoginFlowWithTotpMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceLoginFlowWithTotpMethodBody")
+instance FromJSON SubmitSelfServiceLoginFlowWithTotpMethodBody
 
 instance ToJSON SubmitSelfServiceLoginFlowWithTotpMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithTotpMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithTotpMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceLoginFlowWithWebAuthnMethodBody = SubmitSelfServiceLoginFlowWithWebAuthnMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
-    submitSelfServiceLoginFlowWithWebAuthnMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Identifier is the email or username of the user trying to log in. This field is only required when using WebAuthn for passwordless login. When using WebAuthn for multi-factor authentication, it is not needed.
-    submitSelfServiceLoginFlowWithWebAuthnMethodBodyIdentifier :: Maybe Text,
+    identifier :: Maybe Text,
     -- | Method should be set to \"webAuthn\" when logging in using the WebAuthn strategy.
-    submitSelfServiceLoginFlowWithWebAuthnMethodBodyMethod :: Text,
+    method :: Text,
     -- | Login a WebAuthn Security Key  This must contain the ID of the WebAuthN connection.
-    submitSelfServiceLoginFlowWithWebAuthnMethodBodyWebauthnUnderscorelogin :: Maybe Text
+    webauthn_login :: Maybe Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceLoginFlowWithWebAuthnMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceLoginFlowWithWebAuthnMethodBody")
+instance FromJSON SubmitSelfServiceLoginFlowWithWebAuthnMethodBody
 
 instance ToJSON SubmitSelfServiceLoginFlowWithWebAuthnMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithWebAuthnMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithWebAuthnMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 -- | nolint:deadcode,unused
 data SubmitSelfServiceLogoutFlowWithoutBrowserBody = SubmitSelfServiceLogoutFlowWithoutBrowserBody
   { -- | The Session Token  Invalidate this session token.
-    submitSelfServiceLogoutFlowWithoutBrowserBodySessionUnderscoretoken :: Text
+    session_token :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceLogoutFlowWithoutBrowserBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceLogoutFlowWithoutBrowserBody")
+instance FromJSON SubmitSelfServiceLogoutFlowWithoutBrowserBody
 
 instance ToJSON SubmitSelfServiceLogoutFlowWithoutBrowserBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLogoutFlowWithoutBrowserBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLogoutFlowWithoutBrowserBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceRecoveryFlowBody = SubmitSelfServiceRecoveryFlowBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
-    submitSelfServiceRecoveryFlowBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Email to Recover  Needs to be set when initiating the flow. If the email is a registered recovery email, a recovery link will be sent. If the email is not known, a email with details on what happened will be sent instead.  format: email
-    submitSelfServiceRecoveryFlowBodyEmail :: Text,
+    email :: Text,
     -- | Method supports `link` only right now.
-    submitSelfServiceRecoveryFlowBodyMethod :: Text
+    method :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceRecoveryFlowBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceRecoveryFlowBody")
+instance FromJSON SubmitSelfServiceRecoveryFlowBody
 
 instance ToJSON SubmitSelfServiceRecoveryFlowBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRecoveryFlowBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRecoveryFlowBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceRecoveryFlowWithLinkMethodBody = SubmitSelfServiceRecoveryFlowWithLinkMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
-    submitSelfServiceRecoveryFlowWithLinkMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Email to Recover  Needs to be set when initiating the flow. If the email is a registered recovery email, a recovery link will be sent. If the email is not known, a email with details on what happened will be sent instead.  format: email
-    submitSelfServiceRecoveryFlowWithLinkMethodBodyEmail :: Text,
+    email :: Text,
     -- | Method supports `link` only right now.
-    submitSelfServiceRecoveryFlowWithLinkMethodBodyMethod :: Text
+    method :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceRecoveryFlowWithLinkMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceRecoveryFlowWithLinkMethodBody")
+instance FromJSON SubmitSelfServiceRecoveryFlowWithLinkMethodBody
 
 instance ToJSON SubmitSelfServiceRecoveryFlowWithLinkMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRecoveryFlowWithLinkMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceRegistrationFlowBody = SubmitSelfServiceRegistrationFlowBody
   { -- | CSRFToken is the anti-CSRF token
-    submitSelfServiceRegistrationFlowBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method  Should be set to \"webauthn\" when trying to add, update, or remove a webAuthn pairing.
-    submitSelfServiceRegistrationFlowBodyMethod :: Text,
+    method :: Text,
     -- | Password to sign the user up with
-    submitSelfServiceRegistrationFlowBodyPassword :: Text,
+    password :: Text,
     -- | The identity's traits
-    submitSelfServiceRegistrationFlowBodyTraits :: Value,
+    traits :: Value,
     -- | The provider to register with
-    submitSelfServiceRegistrationFlowBodyProvider :: Text,
+    provider :: Text,
     -- | Register a WebAuthn Security Key  It is expected that the JSON returned by the WebAuthn registration process is included here.
-    submitSelfServiceRegistrationFlowBodyWebauthnUnderscoreregister :: Maybe Text,
+    webauthn_register :: Maybe Text,
     -- | Name of the WebAuthn Security Key to be Added  A human-readable name for the security key which will be added.
-    submitSelfServiceRegistrationFlowBodyWebauthnUnderscoreregisterUnderscoredisplayname :: Maybe Text
+    webauthn_register_displayname :: Maybe Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceRegistrationFlowBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceRegistrationFlowBody")
+instance FromJSON SubmitSelfServiceRegistrationFlowBody
 
 instance ToJSON SubmitSelfServiceRegistrationFlowBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowBody")
+  toEncoding = genericToEncoding defaultOptions
 
 -- | SubmitSelfServiceRegistrationFlowWithOidcMethodBody is used to decode the registration form payload when using the oidc method.
 data SubmitSelfServiceRegistrationFlowWithOidcMethodBody = SubmitSelfServiceRegistrationFlowWithOidcMethodBody
   { -- | The CSRF Token
-    submitSelfServiceRegistrationFlowWithOidcMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method to use  This field must be set to `oidc` when using the oidc method.
-    submitSelfServiceRegistrationFlowWithOidcMethodBodyMethod :: Text,
+    method :: Text,
     -- | The provider to register with
-    submitSelfServiceRegistrationFlowWithOidcMethodBodyProvider :: Text,
+    provider :: Text,
     -- | The identity traits
-    submitSelfServiceRegistrationFlowWithOidcMethodBodyTraits :: Maybe Value
+    traits :: Maybe Value
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceRegistrationFlowWithOidcMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceRegistrationFlowWithOidcMethodBody")
+instance FromJSON SubmitSelfServiceRegistrationFlowWithOidcMethodBody
 
 instance ToJSON SubmitSelfServiceRegistrationFlowWithOidcMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithOidcMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithOidcMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 -- | SubmitSelfServiceRegistrationFlowWithPasswordMethodBody is used to decode the registration form payload when using the password method.
 data SubmitSelfServiceRegistrationFlowWithPasswordMethodBody = SubmitSelfServiceRegistrationFlowWithPasswordMethodBody
   { -- | The CSRF Token
-    submitSelfServiceRegistrationFlowWithPasswordMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method to use  This field must be set to `password` when using the password method.
-    submitSelfServiceRegistrationFlowWithPasswordMethodBodyMethod :: Text,
+    method :: Text,
     -- | Password to sign the user up with
-    submitSelfServiceRegistrationFlowWithPasswordMethodBodyPassword :: Text,
+    password :: Text,
     -- | The identity's traits
-    submitSelfServiceRegistrationFlowWithPasswordMethodBodyTraits :: Value
+    traits :: Value
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceRegistrationFlowWithPasswordMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceRegistrationFlowWithPasswordMethodBody")
+instance FromJSON SubmitSelfServiceRegistrationFlowWithPasswordMethodBody
 
 instance ToJSON SubmitSelfServiceRegistrationFlowWithPasswordMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithPasswordMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithPasswordMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceRegistrationFlowWithWebAuthnMethodBody = SubmitSelfServiceRegistrationFlowWithWebAuthnMethodBody
   { -- | CSRFToken is the anti-CSRF token
-    submitSelfServiceRegistrationFlowWithWebAuthnMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method  Should be set to \"webauthn\" when trying to add, update, or remove a webAuthn pairing.
-    submitSelfServiceRegistrationFlowWithWebAuthnMethodBodyMethod :: Text,
+    method :: Text,
     -- | The identity's traits
-    submitSelfServiceRegistrationFlowWithWebAuthnMethodBodyTraits :: Value,
+    traits :: Value,
     -- | Register a WebAuthn Security Key  It is expected that the JSON returned by the WebAuthn registration process is included here.
-    submitSelfServiceRegistrationFlowWithWebAuthnMethodBodyWebauthnUnderscoreregister :: Maybe Text,
+    webauthn_register :: Maybe Text,
     -- | Name of the WebAuthn Security Key to be Added  A human-readable name for the security key which will be added.
-    submitSelfServiceRegistrationFlowWithWebAuthnMethodBodyWebauthnUnderscoreregisterUnderscoredisplayname :: Maybe Text
+    webauthn_register_displayname :: Maybe Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceRegistrationFlowWithWebAuthnMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceRegistrationFlowWithWebAuthnMethodBody")
+instance FromJSON SubmitSelfServiceRegistrationFlowWithWebAuthnMethodBody
 
 instance ToJSON SubmitSelfServiceRegistrationFlowWithWebAuthnMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithWebAuthnMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithWebAuthnMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceSettingsFlowBody = SubmitSelfServiceSettingsFlowBody
   { -- | CSRFToken is the anti-CSRF token
-    submitSelfServiceSettingsFlowBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method  Should be set to \"lookup\" when trying to add, update, or remove a lookup pairing.
-    submitSelfServiceSettingsFlowBodyMethod :: Text,
+    method :: Text,
     -- | Password is the updated password
-    submitSelfServiceSettingsFlowBodyPassword :: Text,
+    password :: Text,
     -- | The identity's traits  in: body
-    submitSelfServiceSettingsFlowBodyTraits :: Value,
+    traits :: Value,
     -- | Flow ID is the flow's ID.  in: query
-    submitSelfServiceSettingsFlowBodyFlow :: Maybe Text,
+    flow :: Maybe Text,
     -- | Link this provider  Either this or `unlink` must be set.  type: string in: body
-    submitSelfServiceSettingsFlowBodyLink :: Maybe Text,
+    link :: Maybe Text,
     -- | Unlink this provider  Either this or `link` must be set.  type: string in: body
-    submitSelfServiceSettingsFlowBodyUnlink :: Maybe Text,
+    unlink :: Maybe Text,
     -- | ValidationTOTP must contain a valid TOTP based on the
-    submitSelfServiceSettingsFlowBodyTotpUnderscorecode :: Maybe Text,
+    totp_code :: Maybe Text,
     -- | UnlinkTOTP if true will remove the TOTP pairing, effectively removing the credential. This can be used to set up a new TOTP device.
-    submitSelfServiceSettingsFlowBodyTotpUnderscoreunlink :: Maybe Bool,
+    totp_unlink :: Maybe Bool,
     -- | Register a WebAuthn Security Key  It is expected that the JSON returned by the WebAuthn registration process is included here.
-    submitSelfServiceSettingsFlowBodyWebauthnUnderscoreregister :: Maybe Text,
+    webauthn_register :: Maybe Text,
     -- | Name of the WebAuthn Security Key to be Added  A human-readable name for the security key which will be added.
-    submitSelfServiceSettingsFlowBodyWebauthnUnderscoreregisterUnderscoredisplayname :: Maybe Text,
+    webauthn_register_displayname :: Maybe Text,
     -- | Remove a WebAuthn Security Key  This must contain the ID of the WebAuthN connection.
-    submitSelfServiceSettingsFlowBodyWebauthnUnderscoreremove :: Maybe Text,
+    webauthn_remove :: Maybe Text,
     -- | If set to true will save the regenerated lookup secrets
-    submitSelfServiceSettingsFlowBodyLookupUnderscoresecretUnderscoreconfirm :: Maybe Bool,
+    lookup_secret_confirm :: Maybe Bool,
     -- | Disables this method if true.
-    submitSelfServiceSettingsFlowBodyLookupUnderscoresecretUnderscoredisable :: Maybe Bool,
+    lookup_secret_disable :: Maybe Bool,
     -- | If set to true will regenerate the lookup secrets
-    submitSelfServiceSettingsFlowBodyLookupUnderscoresecretUnderscoreregenerate :: Maybe Bool,
+    lookup_secret_regenerate :: Maybe Bool,
     -- | If set to true will reveal the lookup secrets
-    submitSelfServiceSettingsFlowBodyLookupUnderscoresecretUnderscorereveal :: Maybe Bool
+    lookup_secret_reveal :: Maybe Bool
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceSettingsFlowBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceSettingsFlowBody")
+instance FromJSON SubmitSelfServiceSettingsFlowBody
 
 instance ToJSON SubmitSelfServiceSettingsFlowBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceSettingsFlowWithLookupMethodBody = SubmitSelfServiceSettingsFlowWithLookupMethodBody
   { -- | CSRFToken is the anti-CSRF token
-    submitSelfServiceSettingsFlowWithLookupMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | If set to true will save the regenerated lookup secrets
-    submitSelfServiceSettingsFlowWithLookupMethodBodyLookupUnderscoresecretUnderscoreconfirm :: Maybe Bool,
+    lookup_secret_confirm :: Maybe Bool,
     -- | Disables this method if true.
-    submitSelfServiceSettingsFlowWithLookupMethodBodyLookupUnderscoresecretUnderscoredisable :: Maybe Bool,
+    lookup_secret_disable :: Maybe Bool,
     -- | If set to true will regenerate the lookup secrets
-    submitSelfServiceSettingsFlowWithLookupMethodBodyLookupUnderscoresecretUnderscoreregenerate :: Maybe Bool,
+    lookup_secret_regenerate :: Maybe Bool,
     -- | If set to true will reveal the lookup secrets
-    submitSelfServiceSettingsFlowWithLookupMethodBodyLookupUnderscoresecretUnderscorereveal :: Maybe Bool,
+    lookup_secret_reveal :: Maybe Bool,
     -- | Method  Should be set to \"lookup\" when trying to add, update, or remove a lookup pairing.
-    submitSelfServiceSettingsFlowWithLookupMethodBodyMethod :: Text
+    method :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceSettingsFlowWithLookupMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceSettingsFlowWithLookupMethodBody")
+instance FromJSON SubmitSelfServiceSettingsFlowWithLookupMethodBody
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithLookupMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithLookupMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithLookupMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 -- | nolint:deadcode,unused
 data SubmitSelfServiceSettingsFlowWithOidcMethodBody = SubmitSelfServiceSettingsFlowWithOidcMethodBody
   { -- | Flow ID is the flow's ID.  in: query
-    submitSelfServiceSettingsFlowWithOidcMethodBodyFlow :: Maybe Text,
+    flow :: Maybe Text,
     -- | Link this provider  Either this or `unlink` must be set.  type: string in: body
-    submitSelfServiceSettingsFlowWithOidcMethodBodyLink :: Maybe Text,
+    link :: Maybe Text,
     -- | Method  Should be set to profile when trying to update a profile.
-    submitSelfServiceSettingsFlowWithOidcMethodBodyMethod :: Text,
+    method :: Text,
     -- | The identity's traits  in: body
-    submitSelfServiceSettingsFlowWithOidcMethodBodyTraits :: Maybe Value,
+    traits :: Maybe Value,
     -- | Unlink this provider  Either this or `link` must be set.  type: string in: body
-    submitSelfServiceSettingsFlowWithOidcMethodBodyUnlink :: Maybe Text
+    unlink :: Maybe Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceSettingsFlowWithOidcMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceSettingsFlowWithOidcMethodBody")
+instance FromJSON SubmitSelfServiceSettingsFlowWithOidcMethodBody
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithOidcMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithOidcMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithOidcMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceSettingsFlowWithPasswordMethodBody = SubmitSelfServiceSettingsFlowWithPasswordMethodBody
   { -- | CSRFToken is the anti-CSRF token
-    submitSelfServiceSettingsFlowWithPasswordMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method  Should be set to password when trying to update a password.
-    submitSelfServiceSettingsFlowWithPasswordMethodBodyMethod :: Text,
+    method :: Text,
     -- | Password is the updated password
-    submitSelfServiceSettingsFlowWithPasswordMethodBodyPassword :: Text
+    password :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceSettingsFlowWithPasswordMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceSettingsFlowWithPasswordMethodBody")
+instance FromJSON SubmitSelfServiceSettingsFlowWithPasswordMethodBody
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithPasswordMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithPasswordMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithPasswordMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 -- | nolint:deadcode,unused
 data SubmitSelfServiceSettingsFlowWithProfileMethodBody = SubmitSelfServiceSettingsFlowWithProfileMethodBody
   { -- | The Anti-CSRF Token  This token is only required when performing browser flows.
-    submitSelfServiceSettingsFlowWithProfileMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method  Should be set to profile when trying to update a profile.
-    submitSelfServiceSettingsFlowWithProfileMethodBodyMethod :: Text,
+    method :: Text,
     -- | Traits contains all of the identity's traits.
-    submitSelfServiceSettingsFlowWithProfileMethodBodyTraits :: Value
+    traits :: Value
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceSettingsFlowWithProfileMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceSettingsFlowWithProfileMethodBody")
+instance FromJSON SubmitSelfServiceSettingsFlowWithProfileMethodBody
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithProfileMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithProfileMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithProfileMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceSettingsFlowWithTotpMethodBody = SubmitSelfServiceSettingsFlowWithTotpMethodBody
   { -- | CSRFToken is the anti-CSRF token
-    submitSelfServiceSettingsFlowWithTotpMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method  Should be set to \"totp\" when trying to add, update, or remove a totp pairing.
-    submitSelfServiceSettingsFlowWithTotpMethodBodyMethod :: Text,
+    method :: Text,
     -- | ValidationTOTP must contain a valid TOTP based on the
-    submitSelfServiceSettingsFlowWithTotpMethodBodyTotpUnderscorecode :: Maybe Text,
+    totp_code :: Maybe Text,
     -- | UnlinkTOTP if true will remove the TOTP pairing, effectively removing the credential. This can be used to set up a new TOTP device.
-    submitSelfServiceSettingsFlowWithTotpMethodBodyTotpUnderscoreunlink :: Maybe Bool
+    totp_unlink :: Maybe Bool
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceSettingsFlowWithTotpMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceSettingsFlowWithTotpMethodBody")
+instance FromJSON SubmitSelfServiceSettingsFlowWithTotpMethodBody
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithTotpMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithTotpMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithTotpMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceSettingsFlowWithWebAuthnMethodBody = SubmitSelfServiceSettingsFlowWithWebAuthnMethodBody
   { -- | CSRFToken is the anti-CSRF token
-    submitSelfServiceSettingsFlowWithWebAuthnMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Method  Should be set to \"webauthn\" when trying to add, update, or remove a webAuthn pairing.
-    submitSelfServiceSettingsFlowWithWebAuthnMethodBodyMethod :: Text,
+    method :: Text,
     -- | Register a WebAuthn Security Key  It is expected that the JSON returned by the WebAuthn registration process is included here.
-    submitSelfServiceSettingsFlowWithWebAuthnMethodBodyWebauthnUnderscoreregister :: Maybe Text,
+    webauthn_register :: Maybe Text,
     -- | Name of the WebAuthn Security Key to be Added  A human-readable name for the security key which will be added.
-    submitSelfServiceSettingsFlowWithWebAuthnMethodBodyWebauthnUnderscoreregisterUnderscoredisplayname :: Maybe Text,
+    webauthn_register_displayname :: Maybe Text,
     -- | Remove a WebAuthn Security Key  This must contain the ID of the WebAuthN connection.
-    submitSelfServiceSettingsFlowWithWebAuthnMethodBodyWebauthnUnderscoreremove :: Maybe Text
+    webauthn_remove :: Maybe Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceSettingsFlowWithWebAuthnMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceSettingsFlowWithWebAuthnMethodBody")
+instance FromJSON SubmitSelfServiceSettingsFlowWithWebAuthnMethodBody
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithWebAuthnMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithWebAuthnMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithWebAuthnMethodBody")
+  toEncoding = genericToEncoding defaultOptions
 
 -- | nolint:deadcode,unused
 data SubmitSelfServiceVerificationFlowBody = SubmitSelfServiceVerificationFlowBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
-    submitSelfServiceVerificationFlowBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Email to Verify  Needs to be set when initiating the flow. If the email is a registered verification email, a verification link will be sent. If the email is not known, a email with details on what happened will be sent instead.  format: email
-    submitSelfServiceVerificationFlowBodyEmail :: Text,
+    email :: Text,
     -- | Method supports `link` only right now.
-    submitSelfServiceVerificationFlowBodyMethod :: Text
+    method :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceVerificationFlowBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceVerificationFlowBody")
+instance FromJSON SubmitSelfServiceVerificationFlowBody
 
 instance ToJSON SubmitSelfServiceVerificationFlowBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceVerificationFlowBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceVerificationFlowBody")
+  toEncoding = genericToEncoding defaultOptions
 
 data SubmitSelfServiceVerificationFlowWithLinkMethodBody = SubmitSelfServiceVerificationFlowWithLinkMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
-    submitSelfServiceVerificationFlowWithLinkMethodBodyCsrfUnderscoretoken :: Maybe Text,
+    csrf_token :: Maybe Text,
     -- | Email to Verify  Needs to be set when initiating the flow. If the email is a registered verification email, a verification link will be sent. If the email is not known, a email with details on what happened will be sent instead.  format: email
-    submitSelfServiceVerificationFlowWithLinkMethodBodyEmail :: Text,
+    email :: Text,
     -- | Method supports `link` only right now.
-    submitSelfServiceVerificationFlowWithLinkMethodBodyMethod :: Text
+    method :: Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SubmitSelfServiceVerificationFlowWithLinkMethodBody where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceVerificationFlowWithLinkMethodBody")
+instance FromJSON SubmitSelfServiceVerificationFlowWithLinkMethodBody
 
 instance ToJSON SubmitSelfServiceVerificationFlowWithLinkMethodBody where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceVerificationFlowWithLinkMethodBody")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceVerificationFlowWithLinkMethodBody")
+  toEncoding = genericToEncoding defaultOptions

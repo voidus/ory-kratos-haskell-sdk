@@ -14,195 +14,239 @@ module OryKratos.Types.Ui
   )
 where
 
+import Data.Aeson (FromJSON (..), ToJSON (..), Value, genericParseJSON, genericToEncoding, genericToJSON)
+import Data.Aeson.Types (Options (..), defaultOptions)
+import qualified Data.Char as Char
 import Data.Data (Data)
-import Data.UUID (UUID)
+import Data.Function ((&))
 import Data.List (stripPrefix)
+import qualified Data.Map as Map
 import Data.Maybe (fromMaybe)
-import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON, genericToEncoding)
-import Data.Aeson.Types (Options(..), defaultOptions)
 import Data.Set (Set)
-import Data.Text (Text)
-import Data.Time
 import Data.Swagger (ToSchema, declareNamedSchema)
 import qualified Data.Swagger as Swagger
-import qualified Data.Char as Char
+import Data.Text (Text)
 import qualified Data.Text as T
-import qualified Data.Map as Map
+import Data.Time
+import Data.UUID (UUID)
 import GHC.Generics (Generic)
-import Data.Function ((&))
-import OryKratos.Types.Helper ( removeFieldLabelPrefix )
-
+import OryKratos.Types.Helper (customOptions, removeFieldLabelPrefix)
 
 -- | Container represents a HTML Form. The container can work with both HTTP Form and JSON requests
 data UiContainer = UiContainer
-  { uiContainerAction :: Text -- ^ Action should be used as the form action URL `<form action=\"{{ .Action }}\" method=\"post\">`.
-  , uiContainerMessages :: Maybe [UiText] -- ^ 
-  , uiContainerMethod :: Text -- ^ Method is the form method (e.g. POST)
-  , uiContainerNodes :: [UiNode] -- ^ 
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | Action should be used as the form action URL `<form action=\"{{ .Action }}\" method=\"post\">`.
+    action :: Text,
+    messages :: Maybe [UiText],
+    -- | Method is the form method (e.g. POST)
+    method :: Text,
+    nodes :: [UiNode]
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON UiContainer where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiContainer")
+instance FromJSON UiContainer
+
 instance ToJSON UiContainer where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiContainer")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiContainer")
-
+  toEncoding = genericToEncoding defaultOptions
 
 -- | Nodes are represented as HTML elements or their native UI equivalents. For example, a node can be an &#x60;&lt;img&gt;&#x60; tag, or an &#x60;&lt;input element&gt;&#x60; but also &#x60;some plain text&#x60;.
 data UiNode = UiNode
-  { uiNodeAttributes :: UiNodeAttributes -- ^ 
-  , uiNodeGroup :: Text -- ^ Group specifies which group (e.g. password authenticator) this node belongs to.
-  , uiNodeMessages :: [UiText] -- ^ 
-  , uiNodeMeta :: UiNodeMeta -- ^ 
-  , uiNodeType :: Text -- ^ The node's type
-  } deriving stock (Show, Eq, Generic, Data)
+  { attributes :: UiNodeAttributes,
+    -- | Group specifies which group (e.g. password authenticator) this node belongs to.
+    group :: Text,
+    messages :: [UiText],
+    meta :: UiNodeMeta,
+    -- | The node's type
+    _type :: Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON UiNode where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNode")
+  parseJSON = genericParseJSON customOptions
+
 instance ToJSON UiNode where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiNode")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNode")
+  toJSON = genericToJSON customOptions
+  toEncoding = genericToEncoding customOptions
 
-
--- | 
 data UiNodeAnchorAttributes = UiNodeAnchorAttributes
-  { uiNodeAnchorAttributesHref :: Text -- ^ The link's href (destination) URL.  format: uri
-  , uiNodeAnchorAttributesId :: Text -- ^ A unique identifier
-  , uiNodeAnchorAttributesNodeUnderscoretype :: Text -- ^ NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0.  In this struct it technically always is \"a\".
-  , uiNodeAnchorAttributesTitle :: UiText -- ^ 
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | The link's href (destination) URL.  format: uri
+    href :: Text,
+    -- | A unique identifier
+    id :: Text,
+    -- | NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0.  In this struct it technically always is \"a\".
+    node_type :: Text,
+    title :: UiText
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON UiNodeAnchorAttributes where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeAnchorAttributes")
+instance FromJSON UiNodeAnchorAttributes
+
 instance ToJSON UiNodeAnchorAttributes where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeAnchorAttributes")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeAnchorAttributes")
+  toEncoding = genericToEncoding defaultOptions
 
-
--- | 
 data UiNodeAttributes = UiNodeAttributes
-  { uiNodeAttributesDisabled :: Bool -- ^ Sets the input's disabled field to true or false.
-  , uiNodeAttributesLabel :: Maybe UiText -- ^ 
-  , uiNodeAttributesName :: Text -- ^ The input's element name.
-  , uiNodeAttributesNodeUnderscoretype :: Text -- ^ NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0. In this struct it technically always is \"script\".
-  , uiNodeAttributesOnclick :: Maybe Text -- ^ OnClick may contain javascript which should be executed on click. This is primarily used for WebAuthn.
-  , uiNodeAttributesPattern :: Maybe Text -- ^ The input's pattern.
-  , uiNodeAttributesRequired :: Maybe Bool -- ^ Mark this input field as required.
-  , uiNodeAttributesType :: Text -- ^ The script MIME type
-  , uiNodeAttributesValue :: Maybe Value -- ^ The input's value.
-  , uiNodeAttributesId :: Text -- ^ A unique identifier
-  , uiNodeAttributesText :: UiText -- ^ 
-  , uiNodeAttributesHeight :: Integer -- ^ Height of the image
-  , uiNodeAttributesSrc :: Text -- ^ The script source
-  , uiNodeAttributesWidth :: Integer -- ^ Width of the image
-  , uiNodeAttributesHref :: Text -- ^ The link's href (destination) URL.  format: uri
-  , uiNodeAttributesTitle :: UiText -- ^ 
-  , uiNodeAttributesAsync :: Bool -- ^ The script async type
-  , uiNodeAttributesCrossorigin :: Text -- ^ The script cross origin policy
-  , uiNodeAttributesIntegrity :: Text -- ^ The script's integrity hash
-  , uiNodeAttributesNonce :: Text -- ^ Nonce for CSP  A nonce you may want to use to improve your Content Security Policy. You do not have to use this value but if you want to improve your CSP policies you may use it. You can also choose to use your own nonce value!
-  , uiNodeAttributesReferrerpolicy :: Text -- ^ The script referrer policy
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | Sets the input's disabled field to true or false.
+    disabled :: Bool,
+    label :: Maybe UiText,
+    -- | The input's element name.
+    name :: Text,
+    -- | NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0. In this struct it technically always is \"script\".
+    node_type :: Text,
+    -- | OnClick may contain javascript which should be executed on click. This is primarily used for WebAuthn.
+    onclick :: Maybe Text,
+    -- | The input's pattern.
+    _pattern :: Maybe Text,
+    -- | Mark this input field as required.
+    required :: Maybe Bool,
+    -- | The script MIME type
+    _type :: Text,
+    -- | The input's value.
+    value :: Maybe Value,
+    -- | A unique identifier
+    id :: Text,
+    text :: UiText,
+    -- | Height of the image
+    height :: Integer,
+    -- | The script source
+    src :: Text,
+    -- | Width of the image
+    width :: Integer,
+    -- | The link's href (destination) URL.  format: uri
+    href :: Text,
+    title :: UiText,
+    -- | The script async type
+    async :: Bool,
+    -- | The script cross origin policy
+    crossorigin :: Text,
+    -- | The script's integrity hash
+    integrity :: Text,
+    -- | Nonce for CSP  A nonce you may want to use to improve your Content Security Policy. You do not have to use this value but if you want to improve your CSP policies you may use it. You can also choose to use your own nonce value!
+    nonce :: Text,
+    -- | The script referrer policy
+    referrerpolicy :: Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON UiNodeAttributes where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeAttributes")
+  parseJSON = genericParseJSON customOptions
+
 instance ToJSON UiNodeAttributes where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeAttributes")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeAttributes")
+  toJSON = genericToJSON customOptions
+  toEncoding = genericToEncoding customOptions
 
-
--- | 
 data UiNodeImageAttributes = UiNodeImageAttributes
-  { uiNodeImageAttributesHeight :: Integer -- ^ Height of the image
-  , uiNodeImageAttributesId :: Text -- ^ A unique identifier
-  , uiNodeImageAttributesNodeUnderscoretype :: Text -- ^ NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0.  In this struct it technically always is \"img\".
-  , uiNodeImageAttributesSrc :: Text -- ^ The image's source URL.  format: uri
-  , uiNodeImageAttributesWidth :: Integer -- ^ Width of the image
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | Height of the image
+    height :: Integer,
+    -- | A unique identifier
+    id :: Text,
+    -- | NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0.  In this struct it technically always is \"img\".
+    node_type :: Text,
+    -- | The image's source URL.  format: uri
+    src :: Text,
+    -- | Width of the image
+    width :: Integer
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON UiNodeImageAttributes where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeImageAttributes")
+instance FromJSON UiNodeImageAttributes
+
 instance ToJSON UiNodeImageAttributes where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeImageAttributes")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeImageAttributes")
-
+  toEncoding = genericToEncoding defaultOptions
 
 -- | InputAttributes represents the attributes of an input node
 data UiNodeInputAttributes = UiNodeInputAttributes
-  { uiNodeInputAttributesDisabled :: Bool -- ^ Sets the input's disabled field to true or false.
-  , uiNodeInputAttributesLabel :: Maybe UiText -- ^ 
-  , uiNodeInputAttributesName :: Text -- ^ The input's element name.
-  , uiNodeInputAttributesNodeUnderscoretype :: Text -- ^ NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0.  In this struct it technically always is \"input\".
-  , uiNodeInputAttributesOnclick :: Maybe Text -- ^ OnClick may contain javascript which should be executed on click. This is primarily used for WebAuthn.
-  , uiNodeInputAttributesPattern :: Maybe Text -- ^ The input's pattern.
-  , uiNodeInputAttributesRequired :: Maybe Bool -- ^ Mark this input field as required.
-  , uiNodeInputAttributesType :: Text -- ^ 
-  , uiNodeInputAttributesValue :: Maybe Value -- ^ The input's value.
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | Sets the input's disabled field to true or false.
+    disabled :: Bool,
+    label :: Maybe UiText,
+    -- | The input's element name.
+    name :: Text,
+    -- | NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0.  In this struct it technically always is \"input\".
+    node_type :: Text,
+    -- | OnClick may contain javascript which should be executed on click. This is primarily used for WebAuthn.
+    onclick :: Maybe Text,
+    -- | The input's pattern.
+    _pattern :: Maybe Text,
+    -- | Mark this input field as required.
+    required :: Maybe Bool,
+    _type :: Text,
+    -- | The input's value.
+    value :: Maybe Value
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON UiNodeInputAttributes where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeInputAttributes")
-instance ToJSON UiNodeInputAttributes where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeInputAttributes")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeInputAttributes")
+  parseJSON = genericParseJSON customOptions
 
+instance ToJSON UiNodeInputAttributes where
+  toJSON = genericToJSON customOptions
+  toEncoding = genericToEncoding customOptions
 
 -- | This might include a label and other information that can optionally be used to render UIs.
 data UiNodeMeta = UiNodeMeta
-  { uiNodeMetaLabel :: Maybe UiText -- ^ 
-  } deriving stock (Show, Eq, Generic, Data)
+  { label :: Maybe UiText
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON UiNodeMeta where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeMeta")
+instance FromJSON UiNodeMeta
+
 instance ToJSON UiNodeMeta where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeMeta")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeMeta")
+  toEncoding = genericToEncoding defaultOptions
 
-
--- | 
 data UiNodeScriptAttributes = UiNodeScriptAttributes
-  { uiNodeScriptAttributesAsync :: Bool -- ^ The script async type
-  , uiNodeScriptAttributesCrossorigin :: Text -- ^ The script cross origin policy
-  , uiNodeScriptAttributesId :: Text -- ^ A unique identifier
-  , uiNodeScriptAttributesIntegrity :: Text -- ^ The script's integrity hash
-  , uiNodeScriptAttributesNodeUnderscoretype :: Text -- ^ NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0. In this struct it technically always is \"script\".
-  , uiNodeScriptAttributesNonce :: Text -- ^ Nonce for CSP  A nonce you may want to use to improve your Content Security Policy. You do not have to use this value but if you want to improve your CSP policies you may use it. You can also choose to use your own nonce value!
-  , uiNodeScriptAttributesReferrerpolicy :: Text -- ^ The script referrer policy
-  , uiNodeScriptAttributesSrc :: Text -- ^ The script source
-  , uiNodeScriptAttributesType :: Text -- ^ The script MIME type
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | The script async type
+    async :: Bool,
+    -- | The script cross origin policy
+    crossorigin :: Text,
+    -- | A unique identifier
+    id :: Text,
+    -- | The script's integrity hash
+    integrity :: Text,
+    -- | NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0. In this struct it technically always is \"script\".
+    node_type :: Text,
+    -- | Nonce for CSP  A nonce you may want to use to improve your Content Security Policy. You do not have to use this value but if you want to improve your CSP policies you may use it. You can also choose to use your own nonce value!
+    nonce :: Text,
+    -- | The script referrer policy
+    referrerpolicy :: Text,
+    -- | The script source
+    src :: Text,
+    -- | The script MIME type
+    _type :: Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON UiNodeScriptAttributes where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeScriptAttributes")
+  parseJSON = genericParseJSON customOptions
+
 instance ToJSON UiNodeScriptAttributes where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeScriptAttributes")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeScriptAttributes")
+  toJSON = genericToJSON customOptions
+  toEncoding = genericToEncoding customOptions
 
-
--- | 
 data UiNodeTextAttributes = UiNodeTextAttributes
-  { uiNodeTextAttributesId :: Text -- ^ A unique identifier
-  , uiNodeTextAttributesNodeUnderscoretype :: Text -- ^ NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0.  In this struct it technically always is \"text\".
-  , uiNodeTextAttributesText :: UiText -- ^ 
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | A unique identifier
+    id :: Text,
+    -- | NodeType represents this node's types. It is a mirror of `node.type` and is primarily used to allow compatibility with OpenAPI 3.0.  In this struct it technically always is \"text\".
+    node_type :: Text,
+    text :: UiText
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON UiNodeTextAttributes where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeTextAttributes")
+instance FromJSON UiNodeTextAttributes
+
 instance ToJSON UiNodeTextAttributes where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeTextAttributes")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeTextAttributes")
+  toEncoding = genericToEncoding defaultOptions
 
-
--- | 
 data UiText = UiText
-  { uiTextContext :: Maybe Value -- ^ The message's context. Useful when customizing messages.
-  , uiTextId :: Integer -- ^ 
-  , uiTextText :: Text -- ^ The message text. Written in american english.
-  , uiTextType :: Text -- ^ 
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | The message's context. Useful when customizing messages.
+    context :: Maybe Value,
+    id :: Integer,
+    -- | The message text. Written in american english.
+    text :: Text,
+    _type :: Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
 instance FromJSON UiText where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiText")
+  parseJSON = genericParseJSON customOptions
+
 instance ToJSON UiText where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "uiText")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiText")
+  toJSON = genericToJSON customOptions
+  toEncoding = genericToEncoding customOptions

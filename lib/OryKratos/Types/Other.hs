@@ -1,93 +1,98 @@
 {-# OPTIONS_GHC -fno-warn-unused-binds -fno-warn-unused-imports #-}
 
 module OryKratos.Types.Other
-  (Session(..)
-  ,
-  SettingsProfileFormConfig (..),
-  SuccessfulSelfServiceLoginWithoutBrowser(..),
-  SuccessfulSelfServiceRegistrationWithoutBrowser(..)
+  ( Session (..),
+    SettingsProfileFormConfig (..),
+    SuccessfulSelfServiceLoginWithoutBrowser (..),
+    SuccessfulSelfServiceRegistrationWithoutBrowser (..),
   )
 where
 
+import Data.Aeson (FromJSON (..), ToJSON (..), Value, genericParseJSON, genericToEncoding, genericToJSON)
+import Data.Aeson.Types (Options (..), defaultOptions)
+import qualified Data.Char as Char
 import Data.Data (Data)
-import Data.UUID (UUID)
+import Data.Function ((&))
 import Data.List (stripPrefix)
+import qualified Data.Map as Map
 import Data.Maybe (fromMaybe)
-import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON, genericToEncoding)
-import Data.Aeson.Types (Options(..), defaultOptions)
 import Data.Set (Set)
-import Data.Text (Text)
-import Data.Time
 import Data.Swagger (ToSchema, declareNamedSchema)
 import qualified Data.Swagger as Swagger
-import qualified Data.Char as Char
+import Data.Text (Text)
 import qualified Data.Text as T
-import qualified Data.Map as Map
+import Data.Time
+import Data.UUID (UUID)
 import GHC.Generics (Generic)
-import Data.Function ((&))
-import OryKratos.Types.Identity ( Identity )
+import OryKratos.Types.Helper (removeFieldLabelPrefix)
+import OryKratos.Types.Identity (Identity)
 import OryKratos.Types.Types
-    ( SessionAuthenticationMethod, AuthenticatorAssuranceLevel )
-import OryKratos.Types.Ui ( UiText, UiNode )
-import OryKratos.Types.Helper ( removeFieldLabelPrefix )
+  ( AuthenticatorAssuranceLevel,
+    SessionAuthenticationMethod,
+  )
+import OryKratos.Types.Ui (UiNode, UiText)
 
 -- | A Session
 data Session = Session
-  { sessionActive :: Maybe Bool -- ^ Active state. If false the session is no longer active.
-  , sessionAuthenticatedUnderscoreat :: Maybe UTCTime -- ^ The Session Authentication Timestamp  When this session was authenticated at. If multi-factor authentication was used this is the time when the last factor was authenticated (e.g. the TOTP code challenge was completed).
-  , sessionAuthenticationUnderscoremethods :: Maybe [SessionAuthenticationMethod] -- ^ A list of authenticators which were used to authenticate the session.
-  , sessionAuthenticatorUnderscoreassuranceUnderscorelevel :: Maybe AuthenticatorAssuranceLevel -- ^ 
-  , sessionExpiresUnderscoreat :: Maybe UTCTime -- ^ The Session Expiry  When this session expires at.
-  , sessionId :: Text -- ^ 
-  , sessionIdentity :: Identity -- ^ 
-  , sessionIssuedUnderscoreat :: Maybe UTCTime -- ^ The Session Issuance Timestamp  When this session was issued at. Usually equal or close to `authenticated_at`.
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | Active state. If false the session is no longer active.
+    active :: Maybe Bool,
+    -- | The Session Authentication Timestamp  When this session was authenticated at. If multi-factor authentication was used this is the time when the last factor was authenticated (e.g. the TOTP code challenge was completed).
+    authenticated_at :: Maybe UTCTime,
+    -- | A list of authenticators which were used to authenticate the session.
+    authentication_methods :: Maybe [SessionAuthenticationMethod],
+    authenticator_assurance_level :: Maybe AuthenticatorAssuranceLevel,
+    -- | The Session Expiry  When this session expires at.
+    expires_at :: Maybe UTCTime,
+    id :: Text,
+    identity :: Identity,
+    -- | The Session Issuance Timestamp  When this session was issued at. Usually equal or close to `authenticated_at`.
+    issued_at :: Maybe UTCTime
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON Session where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "session")
+instance FromJSON Session
+
 instance ToJSON Session where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "session")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "session")
+  toEncoding = genericToEncoding defaultOptions
 
-
--- | 
 data SettingsProfileFormConfig = SettingsProfileFormConfig
-  { settingsProfileFormConfigAction :: Text -- ^ Action should be used as the form action URL `<form action=\"{{ .Action }}\" method=\"post\">`.
-  , settingsProfileFormConfigMessages :: Maybe [UiText] -- ^ 
-  , settingsProfileFormConfigMethod :: Text -- ^ Method is the form method (e.g. POST)
-  , settingsProfileFormConfigNodes :: [UiNode] -- ^ 
-  } deriving stock (Show, Eq, Generic, Data)
+  { -- | Action should be used as the form action URL `<form action=\"{{ .Action }}\" method=\"post\">`.
+    action :: Text,
+    messages :: Maybe [UiText],
+    -- | Method is the form method (e.g. POST)
+    method :: Text,
+    nodes :: [UiNode]
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SettingsProfileFormConfig where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "settingsProfileFormConfig")
+instance FromJSON SettingsProfileFormConfig
+
 instance ToJSON SettingsProfileFormConfig where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "settingsProfileFormConfig")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "settingsProfileFormConfig")
+  toEncoding = genericToEncoding defaultOptions
 
 -- | The Response for Login Flows via API
 data SuccessfulSelfServiceLoginWithoutBrowser = SuccessfulSelfServiceLoginWithoutBrowser
-  { successfulSelfServiceLoginWithoutBrowserSession :: Session -- ^ 
-  , successfulSelfServiceLoginWithoutBrowserSessionUnderscoretoken :: Maybe Text -- ^ The Session Token  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!
-  } deriving stock (Show, Eq, Generic, Data)
+  { session :: Session,
+    -- | The Session Token  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!
+    session_token :: Maybe Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SuccessfulSelfServiceLoginWithoutBrowser where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "successfulSelfServiceLoginWithoutBrowser")
+instance FromJSON SuccessfulSelfServiceLoginWithoutBrowser
+
 instance ToJSON SuccessfulSelfServiceLoginWithoutBrowser where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "successfulSelfServiceLoginWithoutBrowser")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "successfulSelfServiceLoginWithoutBrowser")
-
+  toEncoding = genericToEncoding defaultOptions
 
 -- | The Response for Registration Flows via API
 data SuccessfulSelfServiceRegistrationWithoutBrowser = SuccessfulSelfServiceRegistrationWithoutBrowser
-  { successfulSelfServiceRegistrationWithoutBrowserIdentity :: Identity -- ^ 
-  , successfulSelfServiceRegistrationWithoutBrowserSession :: Maybe Session -- ^ 
-  , successfulSelfServiceRegistrationWithoutBrowserSessionUnderscoretoken :: Maybe Text -- ^ The Session Token  This field is only set when the session hook is configured as a post-registration hook.  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!
-  } deriving stock (Show, Eq, Generic, Data)
+  { identity :: Identity,
+    session :: Maybe Session,
+    -- | The Session Token  This field is only set when the session hook is configured as a post-registration hook.  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!
+    session_token :: Maybe Text
+  }
+  deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SuccessfulSelfServiceRegistrationWithoutBrowser where
-  parseJSON = genericParseJSON (removeFieldLabelPrefix True "successfulSelfServiceRegistrationWithoutBrowser")
+instance FromJSON SuccessfulSelfServiceRegistrationWithoutBrowser
+
 instance ToJSON SuccessfulSelfServiceRegistrationWithoutBrowser where
-  toJSON = genericToJSON (removeFieldLabelPrefix False "successfulSelfServiceRegistrationWithoutBrowser")
-  toEncoding = genericToEncoding (removeFieldLabelPrefix False "successfulSelfServiceRegistrationWithoutBrowser")
-
-
+  toEncoding = genericToEncoding defaultOptions

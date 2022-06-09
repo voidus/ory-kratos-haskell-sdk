@@ -1,4 +1,4 @@
-module OryKratos.Types.Helper (uncapitalize, removeFieldLabelPrefix) where
+module OryKratos.Types.Helper (uncapitalize, removeFieldLabelPrefix, customOptions) where
 
 import Data.Aeson.Types (Options (..), defaultOptions)
 import qualified Data.Char as Char
@@ -11,6 +11,19 @@ import Data.Time ()
 uncapitalize :: String -> String
 uncapitalize (first : rest) = Char.toLower first : rest
 uncapitalize [] = []
+
+typeFieldRename :: String -> String
+typeFieldRename "_type" = "type"
+typeFieldRename "_data" = "data"
+typeFieldRename "_pattern" = "pattern"
+typeFieldRename x = x
+
+customOptions :: Options
+customOptions =
+  defaultOptions
+    { constructorTagModifier = typeFieldRename,
+      fieldLabelModifier = typeFieldRename
+    }
 
 -- | Remove a field label prefix during JSON parsing.
 --   Also perform any replacements for special characters.
