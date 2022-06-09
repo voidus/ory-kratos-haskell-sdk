@@ -17,7 +17,7 @@ import Data.Data (Data)
 import Data.UUID (UUID)
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
-import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON)
+import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON, genericToEncoding)
 import Data.Aeson.Types (Options(..), defaultOptions)
 import Data.Set (Set)
 import Data.Text (Text)
@@ -53,7 +53,7 @@ instance FromJSON AdminCreateIdentityBody where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "adminCreateIdentityBody")
 instance ToJSON AdminCreateIdentityBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "adminCreateIdentityBody")
-
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "adminCreateIdentityBody")
 
 -- | 
 data AdminCreateIdentityImportCredentialsOidc = AdminCreateIdentityImportCredentialsOidc
@@ -64,7 +64,7 @@ instance FromJSON AdminCreateIdentityImportCredentialsOidc where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "adminCreateIdentityImportCredentialsOidc")
 instance ToJSON AdminCreateIdentityImportCredentialsOidc where
   toJSON = genericToJSON (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsOidc")
-
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsOidc")
 
 -- | 
 data AdminCreateIdentityImportCredentialsOidcConfig = AdminCreateIdentityImportCredentialsOidcConfig
@@ -76,6 +76,7 @@ instance FromJSON AdminCreateIdentityImportCredentialsOidcConfig where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "adminCreateIdentityImportCredentialsOidcConfig")
 instance ToJSON AdminCreateIdentityImportCredentialsOidcConfig where
   toJSON = genericToJSON (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsOidcConfig")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsOidcConfig")
 
 
 -- | 
@@ -88,7 +89,7 @@ instance FromJSON AdminCreateIdentityImportCredentialsOidcProvider where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "adminCreateIdentityImportCredentialsOidcProvider")
 instance ToJSON AdminCreateIdentityImportCredentialsOidcProvider where
   toJSON = genericToJSON (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsOidcProvider")
-
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsOidcProvider")
 
 -- | 
 data AdminCreateIdentityImportCredentialsPassword = AdminCreateIdentityImportCredentialsPassword
@@ -99,6 +100,7 @@ instance FromJSON AdminCreateIdentityImportCredentialsPassword where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "adminCreateIdentityImportCredentialsPassword")
 instance ToJSON AdminCreateIdentityImportCredentialsPassword where
   toJSON = genericToJSON (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsPassword")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsPassword")
 
 
 -- | 
@@ -111,6 +113,7 @@ instance FromJSON AdminCreateIdentityImportCredentialsPasswordConfig where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "adminCreateIdentityImportCredentialsPasswordConfig")
 instance ToJSON AdminCreateIdentityImportCredentialsPasswordConfig where
   toJSON = genericToJSON (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsPasswordConfig")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "adminCreateIdentityImportCredentialsPasswordConfig")
 
 
 -- | 
@@ -123,6 +126,7 @@ instance FromJSON AdminCreateSelfServiceRecoveryLinkBody where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "adminCreateSelfServiceRecoveryLinkBody")
 instance ToJSON AdminCreateSelfServiceRecoveryLinkBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "adminCreateSelfServiceRecoveryLinkBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "adminCreateSelfServiceRecoveryLinkBody")
 
 
 -- | 
@@ -135,6 +139,7 @@ instance FromJSON AdminIdentityImportCredentials where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "adminIdentityImportCredentials")
 instance ToJSON AdminIdentityImportCredentials where
   toJSON = genericToJSON (removeFieldLabelPrefix False "adminIdentityImportCredentials")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "adminIdentityImportCredentials")
 
 
 -- | 
@@ -150,4 +155,5 @@ instance FromJSON AdminUpdateIdentityBody where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "adminUpdateIdentityBody")
 instance ToJSON AdminUpdateIdentityBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "adminUpdateIdentityBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "adminUpdateIdentityBody")
 

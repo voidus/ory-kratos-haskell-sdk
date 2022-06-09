@@ -18,7 +18,7 @@ import Data.Data (Data)
 import Data.UUID (UUID)
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
-import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON)
+import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON, genericToEncoding)
 import Data.Aeson.Types (Options(..), defaultOptions)
 import Data.Set (Set)
 import Data.Text (Text)
@@ -45,6 +45,7 @@ instance FromJSON UiContainer where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiContainer")
 instance ToJSON UiContainer where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiContainer")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiContainer")
 
 
 -- | Nodes are represented as HTML elements or their native UI equivalents. For example, a node can be an &#x60;&lt;img&gt;&#x60; tag, or an &#x60;&lt;input element&gt;&#x60; but also &#x60;some plain text&#x60;.
@@ -60,6 +61,7 @@ instance FromJSON UiNode where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNode")
 instance ToJSON UiNode where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiNode")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNode")
 
 
 -- | 
@@ -74,6 +76,7 @@ instance FromJSON UiNodeAnchorAttributes where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeAnchorAttributes")
 instance ToJSON UiNodeAnchorAttributes where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeAnchorAttributes")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeAnchorAttributes")
 
 
 -- | 
@@ -105,6 +108,7 @@ instance FromJSON UiNodeAttributes where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeAttributes")
 instance ToJSON UiNodeAttributes where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeAttributes")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeAttributes")
 
 
 -- | 
@@ -120,6 +124,7 @@ instance FromJSON UiNodeImageAttributes where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeImageAttributes")
 instance ToJSON UiNodeImageAttributes where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeImageAttributes")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeImageAttributes")
 
 
 -- | InputAttributes represents the attributes of an input node
@@ -139,6 +144,7 @@ instance FromJSON UiNodeInputAttributes where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeInputAttributes")
 instance ToJSON UiNodeInputAttributes where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeInputAttributes")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeInputAttributes")
 
 
 -- | This might include a label and other information that can optionally be used to render UIs.
@@ -150,6 +156,7 @@ instance FromJSON UiNodeMeta where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeMeta")
 instance ToJSON UiNodeMeta where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeMeta")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeMeta")
 
 
 -- | 
@@ -169,6 +176,7 @@ instance FromJSON UiNodeScriptAttributes where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeScriptAttributes")
 instance ToJSON UiNodeScriptAttributes where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeScriptAttributes")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeScriptAttributes")
 
 
 -- | 
@@ -182,6 +190,7 @@ instance FromJSON UiNodeTextAttributes where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiNodeTextAttributes")
 instance ToJSON UiNodeTextAttributes where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiNodeTextAttributes")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiNodeTextAttributes")
 
 
 -- | 
@@ -196,3 +205,4 @@ instance FromJSON UiText where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "uiText")
 instance ToJSON UiText where
   toJSON = genericToJSON (removeFieldLabelPrefix False "uiText")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "uiText")

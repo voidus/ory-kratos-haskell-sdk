@@ -26,7 +26,7 @@ module OryKratos.Types.Payload
   )
 where
 
-import Data.Aeson (FromJSON (..), ToJSON (..), Value, genericParseJSON, genericToJSON)
+import Data.Aeson (FromJSON (..), ToJSON (..), Value, genericParseJSON, genericToEncoding, genericToJSON)
 import Data.Aeson.Types (Options (..), defaultOptions)
 import qualified Data.Char as Char
 import Data.Data (Data)
@@ -73,6 +73,7 @@ instance FromJSON SubmitSelfServiceLoginFlowBody where
 
 instance ToJSON SubmitSelfServiceLoginFlowBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowBody")
 
 data SubmitSelfServiceLoginFlowWithLookupSecretMethodBody = SubmitSelfServiceLoginFlowWithLookupSecretMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
@@ -89,6 +90,7 @@ instance FromJSON SubmitSelfServiceLoginFlowWithLookupSecretMethodBody where
 
 instance ToJSON SubmitSelfServiceLoginFlowWithLookupSecretMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithLookupSecretMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithLookupSecretMethodBody")
 
 -- | SubmitSelfServiceLoginFlowWithOidcMethodBody is used to decode the login form payload when using the oidc method.
 data SubmitSelfServiceLoginFlowWithOidcMethodBody = SubmitSelfServiceLoginFlowWithOidcMethodBody
@@ -108,6 +110,7 @@ instance FromJSON SubmitSelfServiceLoginFlowWithOidcMethodBody where
 
 instance ToJSON SubmitSelfServiceLoginFlowWithOidcMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithOidcMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithOidcMethodBody")
 
 data SubmitSelfServiceLoginFlowWithPasswordMethodBody = SubmitSelfServiceLoginFlowWithPasswordMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
@@ -128,6 +131,7 @@ instance FromJSON SubmitSelfServiceLoginFlowWithPasswordMethodBody where
 
 instance ToJSON SubmitSelfServiceLoginFlowWithPasswordMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithPasswordMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithPasswordMethodBody")
 
 data SubmitSelfServiceLoginFlowWithTotpMethodBody = SubmitSelfServiceLoginFlowWithTotpMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
@@ -144,6 +148,7 @@ instance FromJSON SubmitSelfServiceLoginFlowWithTotpMethodBody where
 
 instance ToJSON SubmitSelfServiceLoginFlowWithTotpMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithTotpMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithTotpMethodBody")
 
 data SubmitSelfServiceLoginFlowWithWebAuthnMethodBody = SubmitSelfServiceLoginFlowWithWebAuthnMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
@@ -162,6 +167,7 @@ instance FromJSON SubmitSelfServiceLoginFlowWithWebAuthnMethodBody where
 
 instance ToJSON SubmitSelfServiceLoginFlowWithWebAuthnMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithWebAuthnMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLoginFlowWithWebAuthnMethodBody")
 
 -- | nolint:deadcode,unused
 data SubmitSelfServiceLogoutFlowWithoutBrowserBody = SubmitSelfServiceLogoutFlowWithoutBrowserBody
@@ -175,6 +181,7 @@ instance FromJSON SubmitSelfServiceLogoutFlowWithoutBrowserBody where
 
 instance ToJSON SubmitSelfServiceLogoutFlowWithoutBrowserBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceLogoutFlowWithoutBrowserBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceLogoutFlowWithoutBrowserBody")
 
 data SubmitSelfServiceRecoveryFlowBody = SubmitSelfServiceRecoveryFlowBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
@@ -191,6 +198,7 @@ instance FromJSON SubmitSelfServiceRecoveryFlowBody where
 
 instance ToJSON SubmitSelfServiceRecoveryFlowBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRecoveryFlowBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRecoveryFlowBody")
 
 data SubmitSelfServiceRecoveryFlowWithLinkMethodBody = SubmitSelfServiceRecoveryFlowWithLinkMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
@@ -207,6 +215,7 @@ instance FromJSON SubmitSelfServiceRecoveryFlowWithLinkMethodBody where
 
 instance ToJSON SubmitSelfServiceRecoveryFlowWithLinkMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRecoveryFlowWithLinkMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowBody")
 
 data SubmitSelfServiceRegistrationFlowBody = SubmitSelfServiceRegistrationFlowBody
   { -- | CSRFToken is the anti-CSRF token
@@ -231,6 +240,7 @@ instance FromJSON SubmitSelfServiceRegistrationFlowBody where
 
 instance ToJSON SubmitSelfServiceRegistrationFlowBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowBody")
 
 -- | SubmitSelfServiceRegistrationFlowWithOidcMethodBody is used to decode the registration form payload when using the oidc method.
 data SubmitSelfServiceRegistrationFlowWithOidcMethodBody = SubmitSelfServiceRegistrationFlowWithOidcMethodBody
@@ -250,6 +260,7 @@ instance FromJSON SubmitSelfServiceRegistrationFlowWithOidcMethodBody where
 
 instance ToJSON SubmitSelfServiceRegistrationFlowWithOidcMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithOidcMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithOidcMethodBody")
 
 -- | SubmitSelfServiceRegistrationFlowWithPasswordMethodBody is used to decode the registration form payload when using the password method.
 data SubmitSelfServiceRegistrationFlowWithPasswordMethodBody = SubmitSelfServiceRegistrationFlowWithPasswordMethodBody
@@ -269,6 +280,7 @@ instance FromJSON SubmitSelfServiceRegistrationFlowWithPasswordMethodBody where
 
 instance ToJSON SubmitSelfServiceRegistrationFlowWithPasswordMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithPasswordMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithPasswordMethodBody")
 
 data SubmitSelfServiceRegistrationFlowWithWebAuthnMethodBody = SubmitSelfServiceRegistrationFlowWithWebAuthnMethodBody
   { -- | CSRFToken is the anti-CSRF token
@@ -289,6 +301,7 @@ instance FromJSON SubmitSelfServiceRegistrationFlowWithWebAuthnMethodBody where
 
 instance ToJSON SubmitSelfServiceRegistrationFlowWithWebAuthnMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithWebAuthnMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceRegistrationFlowWithWebAuthnMethodBody")
 
 data SubmitSelfServiceSettingsFlowBody = SubmitSelfServiceSettingsFlowBody
   { -- | CSRFToken is the anti-CSRF token
@@ -331,6 +344,7 @@ instance FromJSON SubmitSelfServiceSettingsFlowBody where
 
 instance ToJSON SubmitSelfServiceSettingsFlowBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowBody")
 
 data SubmitSelfServiceSettingsFlowWithLookupMethodBody = SubmitSelfServiceSettingsFlowWithLookupMethodBody
   { -- | CSRFToken is the anti-CSRF token
@@ -353,6 +367,7 @@ instance FromJSON SubmitSelfServiceSettingsFlowWithLookupMethodBody where
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithLookupMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithLookupMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithLookupMethodBody")
 
 -- | nolint:deadcode,unused
 data SubmitSelfServiceSettingsFlowWithOidcMethodBody = SubmitSelfServiceSettingsFlowWithOidcMethodBody
@@ -374,6 +389,7 @@ instance FromJSON SubmitSelfServiceSettingsFlowWithOidcMethodBody where
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithOidcMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithOidcMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithOidcMethodBody")
 
 data SubmitSelfServiceSettingsFlowWithPasswordMethodBody = SubmitSelfServiceSettingsFlowWithPasswordMethodBody
   { -- | CSRFToken is the anti-CSRF token
@@ -390,6 +406,7 @@ instance FromJSON SubmitSelfServiceSettingsFlowWithPasswordMethodBody where
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithPasswordMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithPasswordMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithPasswordMethodBody")
 
 -- | nolint:deadcode,unused
 data SubmitSelfServiceSettingsFlowWithProfileMethodBody = SubmitSelfServiceSettingsFlowWithProfileMethodBody
@@ -407,6 +424,7 @@ instance FromJSON SubmitSelfServiceSettingsFlowWithProfileMethodBody where
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithProfileMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithProfileMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithProfileMethodBody")
 
 data SubmitSelfServiceSettingsFlowWithTotpMethodBody = SubmitSelfServiceSettingsFlowWithTotpMethodBody
   { -- | CSRFToken is the anti-CSRF token
@@ -425,6 +443,7 @@ instance FromJSON SubmitSelfServiceSettingsFlowWithTotpMethodBody where
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithTotpMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithTotpMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithTotpMethodBody")
 
 data SubmitSelfServiceSettingsFlowWithWebAuthnMethodBody = SubmitSelfServiceSettingsFlowWithWebAuthnMethodBody
   { -- | CSRFToken is the anti-CSRF token
@@ -445,6 +464,7 @@ instance FromJSON SubmitSelfServiceSettingsFlowWithWebAuthnMethodBody where
 
 instance ToJSON SubmitSelfServiceSettingsFlowWithWebAuthnMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithWebAuthnMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceSettingsFlowWithWebAuthnMethodBody")
 
 -- | nolint:deadcode,unused
 data SubmitSelfServiceVerificationFlowBody = SubmitSelfServiceVerificationFlowBody
@@ -462,6 +482,7 @@ instance FromJSON SubmitSelfServiceVerificationFlowBody where
 
 instance ToJSON SubmitSelfServiceVerificationFlowBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceVerificationFlowBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceVerificationFlowBody")
 
 data SubmitSelfServiceVerificationFlowWithLinkMethodBody = SubmitSelfServiceVerificationFlowWithLinkMethodBody
   { -- | Sending the anti-csrf token is only required for browser login flows.
@@ -478,3 +499,4 @@ instance FromJSON SubmitSelfServiceVerificationFlowWithLinkMethodBody where
 
 instance ToJSON SubmitSelfServiceVerificationFlowWithLinkMethodBody where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceVerificationFlowWithLinkMethodBody")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceVerificationFlowWithLinkMethodBody")

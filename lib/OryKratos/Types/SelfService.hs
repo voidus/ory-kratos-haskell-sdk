@@ -21,7 +21,7 @@ import Data.Data (Data)
 import Data.UUID (UUID)
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
-import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON)
+import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON, genericToEncoding)
 import Data.Aeson.Types (Options(..), defaultOptions)
 import Data.Set (Set)
 import Data.Text (Text)
@@ -55,6 +55,7 @@ instance FromJSON SelfServiceBrowserLocationChangeRequiredError where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceBrowserLocationChangeRequiredError")
 instance ToJSON SelfServiceBrowserLocationChangeRequiredError where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceBrowserLocationChangeRequiredError")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceBrowserLocationChangeRequiredError")
 
 
 -- | 
@@ -69,6 +70,7 @@ instance FromJSON SelfServiceError where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceError")
 instance ToJSON SelfServiceError where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceError")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceError")
 
 
 -- | Is sent when a flow is expired
@@ -89,6 +91,7 @@ instance FromJSON SelfServiceFlowExpiredError where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceFlowExpiredError")
 instance ToJSON SelfServiceFlowExpiredError where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceFlowExpiredError")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceFlowExpiredError")
 
 
 -- | This object represents a login flow. A login flow is initiated at the \&quot;Initiate Login API / Browser Flow\&quot; endpoint by a client.  Once a login flow is completed successfully, a session cookie or session token will be issued.
@@ -111,6 +114,7 @@ instance FromJSON SelfServiceLoginFlow where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceLoginFlow")
 instance ToJSON SelfServiceLoginFlow where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceLoginFlow")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceLoginFlow")
 
 
 -- | 
@@ -123,6 +127,7 @@ instance FromJSON SelfServiceLogoutUrl where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceLogoutUrl")
 instance ToJSON SelfServiceLogoutUrl where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceLogoutUrl")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceLogoutUrl")
 
 
 -- | This request is used when an identity wants to recover their account.  We recommend reading the [Account Recovery Documentation](../self-service/flows/password-reset-account-recovery)
@@ -142,6 +147,7 @@ instance FromJSON SelfServiceRecoveryFlow where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceRecoveryFlow")
 instance ToJSON SelfServiceRecoveryFlow where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceRecoveryFlow")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceRecoveryFlow")
 
 
 -- | The state represents the state of the recovery flow.  choose_method: ask the user to choose a method (e.g. recover account via email) sent_email: the email has been sent to the user passed_challenge: the request was successful and the recovery challenge was passed.
@@ -153,6 +159,7 @@ instance FromJSON SelfServiceRecoveryFlowState where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceRecoveryFlowState")
 instance ToJSON SelfServiceRecoveryFlowState where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceRecoveryFlowState")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceRecoveryFlowState")
 
 
 -- | 
@@ -165,6 +172,7 @@ instance FromJSON SelfServiceRecoveryLink where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceRecoveryLink")
 instance ToJSON SelfServiceRecoveryLink where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceRecoveryLink")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceRecoveryLink")
 
 
 -- | 
@@ -183,6 +191,7 @@ instance FromJSON SelfServiceRegistrationFlow where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceRegistrationFlow")
 instance ToJSON SelfServiceRegistrationFlow where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceRegistrationFlow")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceRegistrationFlow")
 
 
 -- | This flow is used when an identity wants to update settings (e.g. profile data, passwords, ...) in a selfservice manner.  We recommend reading the [User Settings Documentation](../self-service/flows/user-settings)
@@ -203,6 +212,7 @@ instance FromJSON SelfServiceSettingsFlow where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceSettingsFlow")
 instance ToJSON SelfServiceSettingsFlow where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceSettingsFlow")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceSettingsFlow")
 
 
 -- | show_form: No user data has been collected, or it is invalid, and thus the form should be shown. success: Indicates that the settings flow has been updated successfully with the provided data. Done will stay true when repeatedly checking. If set to true, done will revert back to false only when a flow with invalid (e.g. \&quot;please use a valid phone number\&quot;) data was sent.
@@ -214,6 +224,7 @@ instance FromJSON SelfServiceSettingsFlowState where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceSettingsFlowState")
 instance ToJSON SelfServiceSettingsFlowState where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceSettingsFlowState")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceSettingsFlowState")
 
 
 -- | Used to verify an out-of-band communication channel such as an email address or a phone number.  For more information head over to: https://www.ory.sh/docs/kratos/selfservice/flows/verify-email-account-activation
@@ -233,6 +244,7 @@ instance FromJSON SelfServiceVerificationFlow where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceVerificationFlow")
 instance ToJSON SelfServiceVerificationFlow where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceVerificationFlow")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceVerificationFlow")
 
 
 -- | The state represents the state of the verification flow.  choose_method: ask the user to choose a method (e.g. recover account via email) sent_email: the email has been sent to the user passed_challenge: the request was successful and the recovery challenge was passed.
@@ -244,3 +256,4 @@ instance FromJSON SelfServiceVerificationFlowState where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "selfServiceVerificationFlowState")
 instance ToJSON SelfServiceVerificationFlowState where
   toJSON = genericToJSON (removeFieldLabelPrefix False "selfServiceVerificationFlowState")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "selfServiceVerificationFlowState")

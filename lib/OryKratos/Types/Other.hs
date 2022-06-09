@@ -13,7 +13,7 @@ import Data.Data (Data)
 import Data.UUID (UUID)
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
-import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON)
+import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON, genericToEncoding)
 import Data.Aeson.Types (Options(..), defaultOptions)
 import Data.Set (Set)
 import Data.Text (Text)
@@ -47,6 +47,7 @@ instance FromJSON Session where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "session")
 instance ToJSON Session where
   toJSON = genericToJSON (removeFieldLabelPrefix False "session")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "session")
 
 
 -- | 
@@ -61,6 +62,7 @@ instance FromJSON SettingsProfileFormConfig where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "settingsProfileFormConfig")
 instance ToJSON SettingsProfileFormConfig where
   toJSON = genericToJSON (removeFieldLabelPrefix False "settingsProfileFormConfig")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "settingsProfileFormConfig")
 
 -- | The Response for Login Flows via API
 data SuccessfulSelfServiceLoginWithoutBrowser = SuccessfulSelfServiceLoginWithoutBrowser
@@ -72,6 +74,7 @@ instance FromJSON SuccessfulSelfServiceLoginWithoutBrowser where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "successfulSelfServiceLoginWithoutBrowser")
 instance ToJSON SuccessfulSelfServiceLoginWithoutBrowser where
   toJSON = genericToJSON (removeFieldLabelPrefix False "successfulSelfServiceLoginWithoutBrowser")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "successfulSelfServiceLoginWithoutBrowser")
 
 
 -- | The Response for Registration Flows via API
@@ -85,5 +88,6 @@ instance FromJSON SuccessfulSelfServiceRegistrationWithoutBrowser where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "successfulSelfServiceRegistrationWithoutBrowser")
 instance ToJSON SuccessfulSelfServiceRegistrationWithoutBrowser where
   toJSON = genericToJSON (removeFieldLabelPrefix False "successfulSelfServiceRegistrationWithoutBrowser")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "successfulSelfServiceRegistrationWithoutBrowser")
 
 

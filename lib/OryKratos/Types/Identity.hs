@@ -16,7 +16,7 @@ import Data.Data (Data)
 import Data.UUID (UUID)
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
-import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON)
+import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON, genericToEncoding)
 import Data.Aeson.Types (Options(..), defaultOptions)
 import Data.Set (Set)
 import Data.Text (Text)
@@ -53,6 +53,7 @@ instance FromJSON Identity where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "identity")
 instance ToJSON Identity where
   toJSON = genericToJSON (removeFieldLabelPrefix False "identity")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "identity")
 
 
 -- | Credentials represents a specific credential type
@@ -69,6 +70,7 @@ instance FromJSON IdentityCredentials where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "identityCredentials")
 instance ToJSON IdentityCredentials where
   toJSON = genericToJSON (removeFieldLabelPrefix False "identityCredentials")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "identityCredentials")
 
 
 -- | 
@@ -80,6 +82,7 @@ instance FromJSON IdentityCredentialsOidc where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "identityCredentialsOidc")
 instance ToJSON IdentityCredentialsOidc where
   toJSON = genericToJSON (removeFieldLabelPrefix False "identityCredentialsOidc")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "identityCredentialsOidc")
 
 
 -- | 
@@ -95,6 +98,7 @@ instance FromJSON IdentityCredentialsOidcProvider where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "identityCredentialsOidcProvider")
 instance ToJSON IdentityCredentialsOidcProvider where
   toJSON = genericToJSON (removeFieldLabelPrefix False "identityCredentialsOidcProvider")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "identityCredentialsOidcProvider")
 
 
 -- | 
@@ -106,6 +110,7 @@ instance FromJSON IdentityCredentialsPassword where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "identityCredentialsPassword")
 instance ToJSON IdentityCredentialsPassword where
   toJSON = genericToJSON (removeFieldLabelPrefix False "identityCredentialsPassword")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "identityCredentialsPassword")
 
 
 -- | and so on.
@@ -117,6 +122,7 @@ instance FromJSON IdentityCredentialsType where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "identityCredentialsType")
 instance ToJSON IdentityCredentialsType where
   toJSON = genericToJSON (removeFieldLabelPrefix False "identityCredentialsType")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "identityCredentialsType")
 
 
 -- | 
@@ -129,6 +135,7 @@ instance FromJSON IdentitySchema where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "identitySchema")
 instance ToJSON IdentitySchema where
   toJSON = genericToJSON (removeFieldLabelPrefix False "identitySchema")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "identitySchema")
 
 
 -- | The state can either be &#x60;active&#x60; or &#x60;inactive&#x60;.
@@ -140,3 +147,4 @@ instance FromJSON IdentityState where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "identityState")
 instance ToJSON IdentityState where
   toJSON = genericToJSON (removeFieldLabelPrefix False "identityState")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "identityState")

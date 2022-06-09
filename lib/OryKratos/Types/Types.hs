@@ -26,7 +26,7 @@ import Data.Data (Data)
 import Data.UUID (UUID)
 import Data.List (stripPrefix)
 import Data.Maybe (fromMaybe)
-import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON)
+import Data.Aeson (Value, FromJSON(..), ToJSON(..), genericToJSON, genericParseJSON, genericToEncoding)
 import Data.Aeson.Types (Options(..), defaultOptions)
 import Data.Set (Set)
 import Data.Text (Text)
@@ -49,6 +49,7 @@ instance FromJSON AuthenticatorAssuranceLevel where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "authenticatorAssuranceLevel")
 instance ToJSON AuthenticatorAssuranceLevel where
   toJSON = genericToJSON (removeFieldLabelPrefix False "authenticatorAssuranceLevel")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "authenticatorAssuranceLevel")
 
 
 -- | 
@@ -68,6 +69,7 @@ instance FromJSON ErrorAuthenticatorAssuranceLevelNotSatisfied where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "errorAuthenticatorAssuranceLevelNotSatisfied")
 instance ToJSON ErrorAuthenticatorAssuranceLevelNotSatisfied where
   toJSON = genericToJSON (removeFieldLabelPrefix False "errorAuthenticatorAssuranceLevelNotSatisfied")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "errorAuthenticatorAssuranceLevelNotSatisfied")
 
 
 -- | 
@@ -86,6 +88,7 @@ instance FromJSON GenericError where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "genericError")
 instance ToJSON GenericError where
   toJSON = genericToJSON (removeFieldLabelPrefix False "genericError")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "genericError")
 
 
 -- | 
@@ -97,6 +100,7 @@ instance FromJSON GetVersion200Response where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "getVersion200Response")
 instance ToJSON GetVersion200Response where
   toJSON = genericToJSON (removeFieldLabelPrefix False "getVersion200Response")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "getVersion200Response")
 
 
 -- | 
@@ -108,6 +112,7 @@ instance FromJSON HealthNotReadyStatus where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "healthNotReadyStatus")
 instance ToJSON HealthNotReadyStatus where
   toJSON = genericToJSON (removeFieldLabelPrefix False "healthNotReadyStatus")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "healthNotReadyStatus")
 
 
 -- | 
@@ -119,6 +124,7 @@ instance FromJSON HealthStatus where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "healthStatus")
 instance ToJSON HealthStatus where
   toJSON = genericToJSON (removeFieldLabelPrefix False "healthStatus")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "healthStatus")
 
 -- | 
 data IsAlive200Response = IsAlive200Response
@@ -129,6 +135,7 @@ instance FromJSON IsAlive200Response where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "isAlive200Response")
 instance ToJSON IsAlive200Response where
   toJSON = genericToJSON (removeFieldLabelPrefix False "isAlive200Response")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "isAlive200Response")
 
 
 -- | 
@@ -140,6 +147,7 @@ instance FromJSON IsReady503Response where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "isReady503Response")
 instance ToJSON IsReady503Response where
   toJSON = genericToJSON (removeFieldLabelPrefix False "isReady503Response")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "isReady503Response")
 
 
 -- | The standard Ory JSON API error format.
@@ -151,6 +159,7 @@ instance FromJSON JsonError where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "jsonError")
 instance ToJSON JsonError where
   toJSON = genericToJSON (removeFieldLabelPrefix False "jsonError")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "jsonError")
 
 
 -- | 
@@ -170,6 +179,7 @@ instance FromJSON NeedsPrivilegedSessionError where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "needsPrivilegedSessionError")
 instance ToJSON NeedsPrivilegedSessionError where
   toJSON = genericToJSON (removeFieldLabelPrefix False "needsPrivilegedSessionError")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "needsPrivilegedSessionError")
 
 
 -- | 
@@ -182,6 +192,7 @@ instance FromJSON Pagination where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "pagination")
 instance ToJSON Pagination where
   toJSON = genericToJSON (removeFieldLabelPrefix False "pagination")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "pagination")
 
 
 -- | 
@@ -197,6 +208,7 @@ instance FromJSON RecoveryAddress where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "recoveryAddress")
 instance ToJSON RecoveryAddress where
   toJSON = genericToJSON (removeFieldLabelPrefix False "recoveryAddress")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "recoveryAddress")
 
 
 -- | 
@@ -208,6 +220,7 @@ instance FromJSON RevokedSessions where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "revokedSessions")
 instance ToJSON RevokedSessions where
   toJSON = genericToJSON (removeFieldLabelPrefix False "revokedSessions")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "revokedSessions")
 
 -- | A singular authenticator used during authentication / login.
 data SessionAuthenticationMethod = SessionAuthenticationMethod
@@ -220,6 +233,7 @@ instance FromJSON SessionAuthenticationMethod where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "sessionAuthenticationMethod")
 instance ToJSON SessionAuthenticationMethod where
   toJSON = genericToJSON (removeFieldLabelPrefix False "sessionAuthenticationMethod")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "sessionAuthenticationMethod")
 
 
 -- | 
@@ -231,6 +245,7 @@ instance FromJSON SessionDevice where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "sessionDevice")
 instance ToJSON SessionDevice where
   toJSON = genericToJSON (removeFieldLabelPrefix False "sessionDevice")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "sessionDevice")
 
 -- | 
 data SubmitSelfServiceFlowWithWebAuthnRegistrationMethod = SubmitSelfServiceFlowWithWebAuthnRegistrationMethod
@@ -242,6 +257,7 @@ instance FromJSON SubmitSelfServiceFlowWithWebAuthnRegistrationMethod where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "submitSelfServiceFlowWithWebAuthnRegistrationMethod")
 instance ToJSON SubmitSelfServiceFlowWithWebAuthnRegistrationMethod where
   toJSON = genericToJSON (removeFieldLabelPrefix False "submitSelfServiceFlowWithWebAuthnRegistrationMethod")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "submitSelfServiceFlowWithWebAuthnRegistrationMethod")
 
 -- | VerifiableAddress is an identity&#39;s verifiable address
 data VerifiableIdentityAddress = VerifiableIdentityAddress
@@ -259,6 +275,7 @@ instance FromJSON VerifiableIdentityAddress where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "verifiableIdentityAddress")
 instance ToJSON VerifiableIdentityAddress where
   toJSON = genericToJSON (removeFieldLabelPrefix False "verifiableIdentityAddress")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "verifiableIdentityAddress")
 
 
 -- | 
@@ -270,3 +287,4 @@ instance FromJSON Version where
   parseJSON = genericParseJSON (removeFieldLabelPrefix True "version")
 instance ToJSON Version where
   toJSON = genericToJSON (removeFieldLabelPrefix False "version")
+  toEncoding = genericToEncoding (removeFieldLabelPrefix False "version")
