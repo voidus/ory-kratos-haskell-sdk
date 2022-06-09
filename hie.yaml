@@ -1,7 +1,0 @@
-cradle:
-  cabal:
-    - path: "lib"
-      component: "lib:ory-kratos"
-
-    - path: "test"
-      component: "ory-kratos:test:ory-kratos-test"
