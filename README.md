@@ -1,6 +1,6 @@
-# Auto-Generated OpenAPI Bindings to `OryKratos`
+# OpenAPI Bindings to `OryKratos`
 
-The library in `lib` provides auto-generated-from-OpenAPI bindings to the OryKratos API.
+The library in `lib` provides bindings to the OryKratos API.
 
 ## Installation
 
