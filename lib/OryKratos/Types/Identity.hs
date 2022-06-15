@@ -36,7 +36,7 @@ import OryKratos.Types.Types
   )
 
 -- | An identity can be a real human, a service, an IoT device - everything that can be described as an \&quot;actor\&quot; in a system.
-data Identity = Identity
+data Identity traits = Identity
   { -- | CreatedAt is a helper struct field for gobuffalo.pop.
     created_at :: Maybe UTCTime,
     -- | Credentials represents all credentials that can be used for authenticating this identity.
@@ -55,7 +55,7 @@ data Identity = Identity
     state :: Maybe IdentityState,
     state_changed_at :: Maybe UTCTime,
     -- | Traits represent an identity's traits. The identity is able to create, modify, and delete traits in a self-service manner. The input will always be validated against the JSON Schema defined in `schema_url`.
-    traits :: Value,
+    traits :: traits,
     -- | UpdatedAt is a helper struct field for gobuffalo.pop.
     updated_at :: Maybe UTCTime,
     -- | VerifiableAddresses contains all the addresses that can be verified by the user.
@@ -63,9 +63,9 @@ data Identity = Identity
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON Identity
+instance FromJSON traits => FromJSON (Identity traits)
 
-instance ToJSON Identity where
+instance ToJSON traits => ToJSON (Identity traits) where
   toEncoding = genericToEncoding defaultOptions
 
 -- | Credentials represents a specific credential type

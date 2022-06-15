@@ -240,13 +240,13 @@ instance ToJSON SelfServiceRegistrationFlow where
   toEncoding = genericToEncoding customOptions
 
 -- | This flow is used when an identity wants to update settings (e.g. profile data, passwords, ...) in a selfservice manner.  We recommend reading the [User Settings Documentation](../self-service/flows/user-settings)
-data SelfServiceSettingsFlow = SelfServiceSettingsFlow
+data SelfServiceSettingsFlow traits = SelfServiceSettingsFlow
   { -- | Active, if set, contains the registration method that is being used. It is initially not set.
     active :: Maybe Text,
     -- | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to update the setting, a new flow has to be initiated.
     expires_at :: UTCTime,
     id :: UUID,
-    identity :: Identity,
+    identity :: Identity traits,
     -- | IssuedAt is the time (UTC) when the flow occurred.
     issued_at :: UTCTime,
     -- | RequestURL is the initial URL that was requested from Ory Kratos. It can be used to forward information contained in the URL's path or query for example.
@@ -260,10 +260,10 @@ data SelfServiceSettingsFlow = SelfServiceSettingsFlow
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON SelfServiceSettingsFlow where
+instance FromJSON traits => FromJSON (SelfServiceSettingsFlow traits) where
   parseJSON = genericParseJSON customOptions
 
-instance ToJSON SelfServiceSettingsFlow where
+instance ToJSON traits => ToJSON (SelfServiceSettingsFlow traits) where
   toJSON = genericToJSON customOptions
   toEncoding = genericToEncoding customOptions
 
