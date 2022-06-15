@@ -1,6 +1,6 @@
 cabal-version: 3.0
 name:          ory-kratos
-version:       0.0.7.2
+version:       0.0.8.0
 synopsis:      API bindings for Ory Kratos
 description:   API bindings for ory-kratos 0.10.1
 homepage:      https://github.com/njaremko/ory-kratos-haskell-sdk
@@ -37,12 +37,12 @@ library
                        -Wpartial-fields
   if impl(ghc >= 8.8)
     ghc-options:       -Wmissing-deriving-strategies
-    build-depends:      aeson                         >= 2.0 && < 2.1,
+    build-depends:      aeson                         >= 1.5 && < 2.1,
                         base                          >= 4.14 && < 4.17,
                         containers                    >= 0.6 && < 0.7,
                         exceptions                    >= 0.10 && < 0.11,
                         http-api-data                 >= 0.4 && < 0.5,
-                        http-client                   >= 0.7 && < 0.8,
+                        http-client                   >= 0.6 && < 0.8,
                         http-client-tls               >= 0.3 && < 0.4,
                         http-types                    >= 0.12 && < 0.13,
                         mtl                           >= 2.2 && < 2.3,
@@ -53,7 +53,7 @@ library
                         servant-server                >= 0.18 && < 0.20,
                         swagger2                      >= 2.6 && < 2.9,
                         text                          >= 1.2 && < 2.1,
-                        time                          >= 1.10 && < 1.14,
+                        time                          >= 1.9 && < 1.14,
                         transformers                  >= 0.5 && < 0.7,
                         uuid                          >= 1.3 && < 1.4,
                         wai                           >= 3.2 && < 3.3,

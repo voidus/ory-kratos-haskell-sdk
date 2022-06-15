@@ -70,7 +70,7 @@ data SelfServiceError = SelfServiceError
   { -- | CreatedAt is a helper struct field for gobuffalo.pop.
     created_at :: Maybe UTCTime,
     error :: Maybe Value,
-    id :: Text,
+    id :: UUID,
     -- | UpdatedAt is a helper struct field for gobuffalo.pop.
     updated_at :: Maybe UTCTime
   }
@@ -101,7 +101,7 @@ data SelfServiceFlowExpiredError = SelfServiceFlowExpiredError
     since :: Maybe Integer,
     -- | The status description
     status :: Maybe Text,
-    use_flow_id :: Maybe Text
+    use_flow_id :: Maybe UUID
   }
   deriving stock (Show, Eq, Generic, Data)
 
@@ -117,7 +117,7 @@ data SelfServiceLoginFlow = SelfServiceLoginFlow
     created_at :: Maybe UTCTime,
     -- | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to log in, a new flow has to be initiated.
     expires_at :: UTCTime,
-    id :: Text,
+    id :: UUID,
     -- | IssuedAt is the time (UTC) when the flow started.
     issued_at :: UTCTime,
     -- | Refresh stores whether this login flow should enforce re-authentication.
@@ -161,7 +161,7 @@ data SelfServiceRecoveryFlow = SelfServiceRecoveryFlow
     active :: Maybe Text,
     -- | ExpiresAt is the time (UTC) when the request expires. If the user still wishes to update the setting, a new request has to be initiated.
     expires_at :: UTCTime,
-    id :: Text,
+    id :: UUID,
     -- | IssuedAt is the time (UTC) when the request occurred.
     issued_at :: UTCTime,
     -- | RequestURL is the initial URL that was requested from Ory Kratos. It can be used to forward information contained in the URL's path or query for example.
@@ -219,7 +219,7 @@ data SelfServiceRegistrationFlow = SelfServiceRegistrationFlow
   { active :: Maybe IdentityCredentialsType,
     -- | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to log in, a new flow has to be initiated.
     expires_at :: UTCTime,
-    id :: Text,
+    id :: UUID,
     -- | IssuedAt is the time (UTC) when the flow occurred.
     issued_at :: UTCTime,
     -- | RequestURL is the initial URL that was requested from Ory Kratos. It can be used to forward information contained in the URL's path or query for example.
@@ -245,7 +245,7 @@ data SelfServiceSettingsFlow = SelfServiceSettingsFlow
     active :: Maybe Text,
     -- | ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to update the setting, a new flow has to be initiated.
     expires_at :: UTCTime,
-    id :: Text,
+    id :: UUID,
     identity :: Identity,
     -- | IssuedAt is the time (UTC) when the flow occurred.
     issued_at :: UTCTime,
@@ -287,7 +287,7 @@ data SelfServiceVerificationFlow = SelfServiceVerificationFlow
     active :: Maybe Text,
     -- | ExpiresAt is the time (UTC) when the request expires. If the user still wishes to verify the address, a new request has to be initiated.
     expires_at :: Maybe UTCTime,
-    id :: Text,
+    id :: UUID,
     -- | IssuedAt is the time (UTC) when the request occurred.
     issued_at :: Maybe UTCTime,
     -- | RequestURL is the initial URL that was requested from Ory Kratos. It can be used to forward information contained in the URL's path or query for example.

@@ -41,7 +41,7 @@ data Identity = Identity
     created_at :: Maybe UTCTime,
     -- | Credentials represents all credentials that can be used for authenticating this identity.
     credentials :: Maybe (Map.Map String IdentityCredentials),
-    id :: Text,
+    id :: UUID,
     -- | NullJSONRawMessage represents a json.RawMessage that works well with JSON, SQL, and Swagger and is NULLable-
     metadata_admin :: Maybe Value,
     -- | NullJSONRawMessage represents a json.RawMessage that works well with JSON, SQL, and Swagger and is NULLable-

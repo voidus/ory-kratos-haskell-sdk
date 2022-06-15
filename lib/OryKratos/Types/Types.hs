@@ -240,7 +240,7 @@ instance ToJSON Pagination where
 data RecoveryAddress = RecoveryAddress
   { -- | CreatedAt is a helper struct field for gobuffalo.pop.
     created_at :: Maybe UTCTime,
-    id :: Text,
+    id :: UUID,
     -- | UpdatedAt is a helper struct field for gobuffalo.pop.
     updated_at :: Maybe UTCTime,
     value :: Text,
@@ -306,7 +306,7 @@ instance ToJSON SubmitSelfServiceFlowWithWebAuthnRegistrationMethod where
 data VerifiableIdentityAddress = VerifiableIdentityAddress
   { -- | When this entry was created
     created_at :: Maybe UTCTime,
-    id :: Text,
+    id :: UUID,
     -- | VerifiableAddressStatus must not exceed 16 characters as that is the limitation in the SQL Schema
     status :: Text,
     -- | When this entry was last updated

@@ -43,7 +43,7 @@ data Session = Session
     authenticator_assurance_level :: Maybe AuthenticatorAssuranceLevel,
     -- | The Session Expiry  When this session expires at.
     expires_at :: Maybe UTCTime,
-    id :: Text,
+    id :: UUID,
     identity :: Identity,
     -- | The Session Issuance Timestamp  When this session was issued at. Usually equal or close to `authenticated_at`.
     issued_at :: Maybe UTCTime
