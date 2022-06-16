@@ -2,7 +2,7 @@
 
 module OryKratos.Types.Identity
   ( Identity (..),
-    UntypedIdentity (..),
+    UntypedIdentity,
     IdentityCredentials (..),
     IdentityCredentialsOidc (..),
     IdentityCredentialsOidcProvider (..),
