@@ -33,7 +33,7 @@ import OryKratos.Types.Types
 import OryKratos.Types.Ui (UiNode, UiText)
 
 -- | A Session
-data Session traits = Session
+data Session traits metadataAdmin metadataPublic = Session
   { -- | Active state. If false the session is no longer active.
     active :: Maybe Bool,
     -- | The Session Authentication Timestamp  When this session was authenticated at. If multi-factor authentication was used this is the time when the last factor was authenticated (e.g. the TOTP code challenge was completed).
@@ -44,15 +44,26 @@ data Session traits = Session
     -- | The Session Expiry  When this session expires at.
     expires_at :: Maybe UTCTime,
     id :: UUID,
-    identity :: Identity traits,
+    identity :: Identity traits metadataAdmin metadataPublic,
     -- | The Session Issuance Timestamp  When this session was issued at. Usually equal or close to `authenticated_at`.
     issued_at :: Maybe UTCTime
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON traits => FromJSON (Session traits)
+instance
+  ( FromJSON traits,
+    FromJSON metadataAdmin,
+    FromJSON metadataPublic
+  ) =>
+  FromJSON (Session traits metadataAdmin metadataPublic)
 
-instance ToJSON traits => ToJSON (Session traits) where
+instance
+  ( ToJSON traits,
+    ToJSON metadataAdmin,
+    ToJSON metadataPublic
+  ) =>
+  ToJSON (Session traits metadataAdmin metadataPublic)
+  where
   toEncoding = genericToEncoding defaultOptions
 
 data SettingsProfileFormConfig = SettingsProfileFormConfig
@@ -71,28 +82,50 @@ instance ToJSON SettingsProfileFormConfig where
   toEncoding = genericToEncoding defaultOptions
 
 -- | The Response for Login Flows via API
-data SuccessfulSelfServiceLoginWithoutBrowser traits = SuccessfulSelfServiceLoginWithoutBrowser
-  { session :: Session traits,
+data SuccessfulSelfServiceLoginWithoutBrowser traits metadataAdmin metadataPublic = SuccessfulSelfServiceLoginWithoutBrowser
+  { session :: Session traits metadataAdmin metadataPublic,
     -- | The Session Token  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!
     session_token :: Maybe Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON traits => FromJSON (SuccessfulSelfServiceLoginWithoutBrowser traits)
+instance
+  ( FromJSON traits,
+    FromJSON metadataAdmin,
+    FromJSON metadataPublic
+  ) =>
+  FromJSON (SuccessfulSelfServiceLoginWithoutBrowser traits metadataAdmin metadataPublic)
 
-instance ToJSON traits => ToJSON (SuccessfulSelfServiceLoginWithoutBrowser traits) where
+instance
+  ( ToJSON traits,
+    ToJSON metadataAdmin,
+    ToJSON metadataPublic
+  ) =>
+  ToJSON (SuccessfulSelfServiceLoginWithoutBrowser traits metadataAdmin metadataPublic)
+  where
   toEncoding = genericToEncoding defaultOptions
 
 -- | The Response for Registration Flows via API
-data SuccessfulSelfServiceRegistrationWithoutBrowser traits = SuccessfulSelfServiceRegistrationWithoutBrowser
-  { identity :: Identity traits,
-    session :: Maybe (Session traits),
+data SuccessfulSelfServiceRegistrationWithoutBrowser traits metadataAdmin metadataPublic = SuccessfulSelfServiceRegistrationWithoutBrowser
+  { identity :: Identity traits metadataAdmin metadataPublic,
+    session :: Maybe (Session traits metadataAdmin metadataPublic),
     -- | The Session Token  This field is only set when the session hook is configured as a post-registration hook.  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!
     session_token :: Maybe Text
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON traits => FromJSON (SuccessfulSelfServiceRegistrationWithoutBrowser traits)
+instance
+  ( FromJSON traits,
+    FromJSON metadataAdmin,
+    FromJSON metadataPublic
+  ) =>
+  FromJSON (SuccessfulSelfServiceRegistrationWithoutBrowser traits metadataAdmin metadataPublic)
 
-instance ToJSON traits => ToJSON (SuccessfulSelfServiceRegistrationWithoutBrowser traits) where
+instance
+  ( ToJSON traits,
+    ToJSON metadataAdmin,
+    ToJSON metadataPublic
+  ) =>
+  ToJSON (SuccessfulSelfServiceRegistrationWithoutBrowser traits metadataAdmin metadataPublic)
+  where
   toEncoding = genericToEncoding defaultOptions

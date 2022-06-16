@@ -2,6 +2,7 @@
 
 module OryKratos.Types.Identity
   ( Identity (..),
+    UntypedIdentity (..),
     IdentityCredentials (..),
     IdentityCredentialsOidc (..),
     IdentityCredentialsOidcProvider (..),
@@ -35,17 +36,19 @@ import OryKratos.Types.Types
     VerifiableIdentityAddress,
   )
 
+type UntypedIdentity = Identity Value Value Value
+
 -- | An identity can be a real human, a service, an IoT device - everything that can be described as an \&quot;actor\&quot; in a system.
-data Identity traits = Identity
+data Identity traits metadataAdmin metadataPublic = Identity
   { -- | CreatedAt is a helper struct field for gobuffalo.pop.
     created_at :: Maybe UTCTime,
     -- | Credentials represents all credentials that can be used for authenticating this identity.
     credentials :: Maybe (Map.Map String IdentityCredentials),
     id :: UUID,
     -- | NullJSONRawMessage represents a json.RawMessage that works well with JSON, SQL, and Swagger and is NULLable-
-    metadata_admin :: Maybe Value,
+    metadata_admin :: Maybe metadataAdmin,
     -- | NullJSONRawMessage represents a json.RawMessage that works well with JSON, SQL, and Swagger and is NULLable-
-    metadata_public :: Maybe Value,
+    metadata_public :: Maybe metadataPublic,
     -- | RecoveryAddresses contains all the addresses that can be used to recover an identity.
     recovery_addresses :: Maybe [RecoveryAddress],
     -- | SchemaID is the ID of the JSON Schema to be used for validating the identity's traits.
@@ -63,9 +66,20 @@ data Identity traits = Identity
   }
   deriving stock (Show, Eq, Generic, Data)
 
-instance FromJSON traits => FromJSON (Identity traits)
+instance
+  ( FromJSON traits,
+    FromJSON metadataAdmin,
+    FromJSON metadataPublic
+  ) =>
+  FromJSON (Identity traits metadataAdmin metadataPublic)
 
-instance ToJSON traits => ToJSON (Identity traits) where
+instance
+  ( ToJSON traits,
+    ToJSON metadataAdmin,
+    ToJSON metadataPublic
+  ) =>
+  ToJSON (Identity traits metadataAdmin metadataPublic)
+  where
   toEncoding = genericToEncoding defaultOptions
 
 -- | Credentials represents a specific credential type
